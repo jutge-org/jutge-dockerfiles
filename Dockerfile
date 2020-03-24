@@ -11,4 +11,8 @@ COPY install.sh /root/
 WORKDIR /root
 RUN /bin/bash /root/install.sh $type
 
+USER worker
 WORKDIR /home/worker/
+
+ENV USER worker
+ENV LANG C.UTF-8

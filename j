@@ -28,7 +28,7 @@ fi
 
 if [ $1 == 'submit' ];
 then
-    docker run --rm --user=worker -e USER=worker -i jutge-lite $@
+    docker run --rm -i jutge-lite $@
 else
-    docker run --rm --user=worker -e USER=worker -t -v $(pwd):/home/worker jutge-lite $@
+    docker run --rm -t -v $(pwd):/home/worker jutge-lite $@
 fi
