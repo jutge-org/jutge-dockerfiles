@@ -1,0 +1,24 @@
+#!/bin/bash
+
+if [ -z "$1" ];
+then
+    slave_id='default'
+else
+    slave_id=$1
+fi
+
+ulimit -t 300
+umask 077
+
+mkdir $slave_id
+cd $slave_id
+tar xf -
+
+chmod -R u+rwX,go-rwx .
+python com/start.py $slave_id
+
+cd correction
+tar czf - *
+
+cd ../..
+rm -rf $slave_id

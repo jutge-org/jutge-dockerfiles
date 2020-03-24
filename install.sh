@@ -1,8 +1,12 @@
 
 # Install vinga64
-chmod +x /usr/local/bin/vinga64
-chmod +s /usr/local/bin/vinga64
-ls -la /usr/local/bin/vinga64
+chmod +x /usr/bin/vinga64
+chmod +s /usr/bin/vinga64
+ls -la /usr/bin/vinga64
+
+#Install submit
+chmod +x /usr/local/bin/submit
+ls -la /usr/local/bin/submit
 
 # Add users
 adduser --disabled-password --gecos '' worker
@@ -28,7 +32,7 @@ ln -fs /usr/share/zoneinfo/Europe/Andorra /etc/localtime
 dpkg-reconfigure --frontend noninteractive tzdata
 
 # Install common tools
-apt-get --yes install imagemagick joe nano python3 python3-pip python3-pillow python3-cairo python3-yaml tree wget
+apt-get --yes install imagemagick joe nano python3 python3-pip python3-pillow python3-cairo python3-yaml python python-pip python-pillow python-cairo python-yaml tree wget
 
 # Install common python3 packages
 pip3 install jutge jutge-toolkit

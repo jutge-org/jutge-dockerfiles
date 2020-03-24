@@ -8,3 +8,6 @@ lite:
 
 server:
 	docker build -t jutge-server . --build-arg type=server
+
+install:
+	cp j /usr/local/bin
