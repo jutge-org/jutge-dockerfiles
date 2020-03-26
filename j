@@ -28,7 +28,7 @@ fi
 
 if [ $1 == 'submit' ];
 then
-    docker run --rm -i jutge-lite $@
+    docker run --rm -i $selected_ver $@
 else
-    docker run --rm -t -v $(pwd):/home/worker jutge-lite $@
+    docker run --rm -t -v $(pwd):/home/worker $selected_ver $@
 fi
