@@ -10,10 +10,10 @@ fi
 
 for jutge_version in jutge-server jutge-full jutge-lite;
 do
-    ver=$(sudo docker image ls | awk '{print $1}' | grep $jutge_version)
+    ver="$(sudo docker image ls | awk '{print $1}' | grep $jutge_version)"
     if [ "$ver" ];
     then
-	selected_ver=$ver
+	selected_ver="$ver"
         break
     fi
 done
@@ -21,10 +21,8 @@ done
 if [ -z "$selected_ver" ];
 then
     echo No jutge docker image was found! I will download jutge-lite...
-    selected_ver='jutge-lite'
+    selected_ver='jutgeorg/jutge-lite'
 fi
-
-
 
 if [ $1 == 'submit' ];
 then
