@@ -47,8 +47,7 @@ fi
 
 # Install latex
 if [ $1 = "full" ] || [ $1 = "lite" ] ; then
-    # TODO: Remove this commented code for testing!
-    echo apt-get --yes install texlive-latex-extra texlive-games texlive-pstricks
+    apt-get --yes install texlive-latex-extra texlive-games texlive-pstricks
 fi
 
 # Clean apt
