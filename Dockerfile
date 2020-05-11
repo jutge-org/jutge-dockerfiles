@@ -4,7 +4,7 @@ ARG type
 # type can be full, lite or server
 # to pass it: docker build -t some-name . --build-arg type=full
 
-COPY vinga64 /usr/bin/
+COPY jutge-vinga /usr/local/bin/
 COPY submit /usr/local/bin/
 COPY install.sh /root/
 

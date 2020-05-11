@@ -1,8 +1,8 @@
 
-# Install vinga64
-chmod +x /usr/bin/vinga64
-chmod +s /usr/bin/vinga64
-ls -la /usr/bin/vinga64
+# Install jutge-vinga
+chmod +x /usr/local/bin/jutge-vinga
+chmod +s /usr/local/bin/jutge-vinga
+ls -la /usr/local/bin/jutge-vinga
 
 #Install submit
 chmod +x /usr/local/bin/submit
