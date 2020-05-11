@@ -10,7 +10,7 @@ There are three types of images:
 
 You can build the three images with `make` or just one with `make full|lite|server`.
 
-If you want to install the `j` shortcut to run commands from the container, use `make install`.
+If you want to install the `jutge-run` shortcut to run commands inside a container with a Jutge image, use `make install`.
 
 
 ## Dependencies

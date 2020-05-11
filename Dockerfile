@@ -5,7 +5,7 @@ ARG type
 # to pass it: docker build -t some-name . --build-arg type=full
 
 COPY jutge-vinga /usr/local/bin/
-COPY submit /usr/local/bin/
+COPY jutge-start.py /usr/local/bin/jutge-start
 COPY install.sh /root/
 
 WORKDIR /root

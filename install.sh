@@ -4,9 +4,9 @@ chmod +x /usr/local/bin/jutge-vinga
 chmod +s /usr/local/bin/jutge-vinga
 ls -la /usr/local/bin/jutge-vinga
 
-#Install submit
-chmod +x /usr/local/bin/submit
-ls -la /usr/local/bin/submit
+# Install jutge-start
+chmod +x /usr/local/bin/jutge-start
+ls -la /usr/local/bin/jutge-start
 
 # Add users
 adduser --disabled-password --gecos '' worker
@@ -32,10 +32,10 @@ ln -fs /usr/share/zoneinfo/Europe/Andorra /etc/localtime
 dpkg-reconfigure --frontend noninteractive tzdata
 
 # Install common tools
-apt-get --yes install imagemagick joe nano python3 python3-pip python3-pillow python3-cairo python3-yaml python python-pip python-pillow python-cairo python-yaml tree wget
+apt-get --yes install imagemagick joe nano python python-pip python-pillow python-cairo python-yaml tree wget
 
-# Install common python3 packages
-pip3 install jutge jutge-toolkit
+# Install common python packages
+pip install jutge jutge-toolkit
 
 # Install common compilers
 apt-get --yes install build-essential
@@ -47,7 +47,8 @@ fi
 
 # Install latex
 if [ $1 = "full" ] || [ $1 = "lite" ] ; then
-    apt-get --yes install texlive-latex-extra texlive-games texlive-pstricks
+    # TODO: Remove this commented code for testing!
+    echo apt-get --yes install texlive-latex-extra texlive-games texlive-pstricks
 fi
 
 # Clean apt
