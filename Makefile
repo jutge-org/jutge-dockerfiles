@@ -10,4 +10,7 @@ server:
 	docker build -t jutge-server . --build-arg type=server
 
 install:
-	sudo cp jutge-run /usr/local/bin
+	cp jutge-run.sh /usr/local/bin/jutge-run
+	cp jutge-submit.sh /usr/local/bin/jutge-submit
+	cp jutge-start.py /usr/local/bin/jutge-start
+	

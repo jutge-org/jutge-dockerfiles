@@ -10,7 +10,7 @@ Jutge images.
 
 By default, the script runs the given commands in the container, after mounting
 the current working directory as the worker user in the container. But, when \$1
-is submit, the current directory is not mounted and all communication is
+is jutge-submit, the current directory is not mounted and all communication is
 expected to be through pipes.
 
 EOF
@@ -32,7 +32,7 @@ then
     selected_version='jutgeorg/jutge-lite'
 fi
 
-if [ $1 == 'submit' ]
+if [ $1 == 'jutge-submit' ]
 then
     docker run --rm -i $selected_version $@
 else

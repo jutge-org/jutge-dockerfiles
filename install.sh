@@ -32,10 +32,10 @@ ln -fs /usr/share/zoneinfo/Europe/Andorra /etc/localtime
 dpkg-reconfigure --frontend noninteractive tzdata
 
 # Install common tools
-apt-get --yes install imagemagick joe nano python python-pip python-pillow python-cairo python-yaml tree wget
+apt-get --yes install imagemagick joe nano python3 python3-pip python3-pillow python3-cairo python3-yaml tree wget
 
-# Install common python packages
-pip install jutge jutge-toolkit
+# Install common python3 packages
+pip3 install jutge jutge-toolkit
 
 # Install common compilers
 apt-get --yes install build-essential
