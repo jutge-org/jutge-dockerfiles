@@ -30,12 +30,14 @@ dpkg-reconfigure --frontend noninteractive tzdata
 apt-get --yes install imagemagick joe nano tree wget
 
 # Install python3
-apt-get --yes install python3 python3-pip python3-pillow python3-cairo python3-yaml 
+apt-get --yes install python3 python3-pip python3-pillow python3-cairo python3-yaml
 
 # Install jutge python3 packages
-pip3 install jutge jutge-toolkit jutge-vinga-linux
+pip3 install jutge jutge-toolkit
 
-# Give setuid permissions to jutge-vinga
+# Install jutge-vinga
+curl https://jpetit.jutge.org/jutge-vinga-linux > /usr/local/bin/jutge-vinga
+chown root:root /usr/local/bin/jutge-vinga
 chmod +x /usr/local/bin/jutge-vinga
 chmod +s /usr/local/bin/jutge-vinga
 ls -la /usr/local/bin/jutge-vinga
