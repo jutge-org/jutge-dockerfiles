@@ -53,3 +53,7 @@ fi
 
 # Clean apt
 apt-get clean
+
+# Fix convert, because it does not generate the eps files
+# see https://askubuntu.com/questions/1081695/error-during-converting-jpg-to-pdf
+perl -p -i.bak -e 's/domain="coder" rights="none"/domain="coder" rights="read|write"/g' /etc/ImageMagick-6/policy.xml
