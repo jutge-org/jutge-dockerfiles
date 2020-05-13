@@ -20,6 +20,10 @@ adduser --disabled-password --gecos '' worker7
 adduser --disabled-password --gecos '' worker8
 adduser --disabled-password --gecos '' worker9
 
+# Copy .inputrc to worker
+cp /root/.inputrc /home/worker
+chown -R worker:worker /home/worker
+
 # Update and upgrade apt-get packages
 apt-get --yes update
 apt-get --yes upgrade
@@ -32,9 +36,12 @@ ln -fs /usr/share/zoneinfo/Europe/Andorra /etc/localtime
 dpkg-reconfigure --frontend noninteractive tzdata
 
 # Install common tools
-apt-get --yes install imagemagick joe nano python3 python3-pip python3-pillow python3-cairo python3-yaml tree wget
+apt-get --yes install imagemagick joe nano tree wget
 
-# Install common python3 packages
+# Install python3
+apt-get --yes install python3 python3-pip python3-pillow python3-cairo python3-yaml 
+
+# Install needed python3 packages
 pip3 install jutge jutge-toolkit
 
 # Install common compilers

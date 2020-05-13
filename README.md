@@ -5,13 +5,14 @@
 
 ## Documentation
 
-There are three types of images:
+There are several types of images:
 
 - `full`: includes all required dependencies.
 - `lite`: includes all required dependencies, except exotic compilers.
 - `server`: includes all required dependencies, except LaTeX.
+- `test`: includes all required dependencies, except LaTeX and exotic compilers.
 
-You can build the three images with `make` or just one with `make full|lite|server`.
+You can build the three images with `make` or just one with `make full|lite|server|test`.
 
 If you want to install the `jutge-run` shortcut to run commands inside a container with a Jutge image, use
 `sudo make install`. This will also install `jutge-submit` and `jutge-start` which are handy for testing, but insecure for non trusted code.

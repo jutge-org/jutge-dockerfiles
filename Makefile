@@ -9,6 +9,9 @@ lite:
 server:
 	docker build -t jutge-server . --build-arg type=server
 
+test:
+	docker build -t jutge-test . --build-arg type=test
+
 install:
 	cp jutge-run.sh /usr/local/bin/jutge-run
 	cp jutge-submit.sh /usr/local/bin/jutge-submit
