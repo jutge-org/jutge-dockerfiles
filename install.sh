@@ -27,20 +27,13 @@ ln -fs /usr/share/zoneinfo/Europe/Andorra /etc/localtime
 dpkg-reconfigure --frontend noninteractive tzdata
 
 # Install common tools
-apt-get --yes install imagemagick joe nano tree wget
+apt-get --yes install imagemagick joe nano tree wget curl
 
 # Install python3
 apt-get --yes install python3 python3-pip python3-pillow python3-cairo python3-yaml
 
 # Install jutge python3 packages
 pip3 install jutge jutge-toolkit
-
-# Install jutge-vinga
-curl https://jpetit.jutge.org/jutge-vinga-linux > /usr/local/bin/jutge-vinga
-chown root:root /usr/local/bin/jutge-vinga
-chmod +x /usr/local/bin/jutge-vinga
-chmod +s /usr/local/bin/jutge-vinga
-ls -la /usr/local/bin/jutge-vinga
 
 # Install common compilers
 apt-get --yes install build-essential
