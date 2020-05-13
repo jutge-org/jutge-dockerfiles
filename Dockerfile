@@ -15,6 +15,7 @@ RUN /bin/bash /root/install.sh $type
 
 USER worker
 WORKDIR /home/worker/
+COPY _inputrc /home/worker/.inputrc
 
 ENV USER worker
 ENV LANG C.UTF-8
