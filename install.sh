@@ -1,13 +1,4 @@
 
-# Install jutge-vinga
-chmod +x /usr/local/bin/jutge-vinga
-chmod +s /usr/local/bin/jutge-vinga
-ls -la /usr/local/bin/jutge-vinga
-
-# Install jutge-start
-chmod +x /usr/local/bin/jutge-start
-ls -la /usr/local/bin/jutge-start
-
 # Add users
 adduser --disabled-password --gecos '' worker
 adduser --disabled-password --gecos '' worker1
@@ -41,8 +32,13 @@ apt-get --yes install imagemagick joe nano tree wget
 # Install python3
 apt-get --yes install python3 python3-pip python3-pillow python3-cairo python3-yaml 
 
-# Install needed python3 packages
-pip3 install jutge jutge-toolkit
+# Install jutge python3 packages
+pip3 install jutge jutge-toolkit jutge-vinga-linux
+
+# Give setuid permissions to jutge-vinga
+chmod +x /usr/local/bin/jutge-vinga
+chmod +s /usr/local/bin/jutge-vinga
+ls -la /usr/local/bin/jutge-vinga
 
 # Install common compilers
 apt-get --yes install build-essential
