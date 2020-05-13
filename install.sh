@@ -35,6 +35,9 @@ apt-get --yes install python3 python3-pip python3-pillow python3-cairo python3-y
 # Install jutge python3 packages
 pip3 install jutge jutge-toolkit
 
+# Install jutge-vinga
+jutge-install-vinga
+
 # Install common compilers
 apt-get --yes install build-essential
 
