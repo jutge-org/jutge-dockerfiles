@@ -33,7 +33,7 @@ apt-get --yes install build-essential sudo imagemagick joe nano tree wget curl
 apt-get --yes install python3 python3-pip python3-pillow python3-cairo python3-yaml
 
 # Install python3 packages
-pip3 install jutge jutge-toolkit jutge-python easyinput
+pip3 install jutge jutge-toolkit easyinput
 
 # Install jutge-vinga
 jutge-install-vinga
