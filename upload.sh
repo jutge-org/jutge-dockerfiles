@@ -3,6 +3,16 @@
 echo -n "New version? "
 read version
 
+make full
+
+docker image tag jutge-full:latest jutgeorg/jutge-full:$version
+docker image tag jutge-full:latest jutgeorg/jutge-full:latest
+
+docker push jutgeorg/jutge-full:$version
+docker push jutgeorg/jutge-full:latest
+
+docker image rm jutge-full
+docker image rm jutgeorg/jutge-full:$version
 
 make lite
 

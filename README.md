@@ -47,7 +47,7 @@ jutge-run command [ arg1 arg2 ... ]
 - `jutge-make-problem`: Check the program correctness, verify if all the solutions are correct and generate the .pdf files.
 - `jutge-make-quiz`: Generate the json file for a quiz based on a seed.
 - `jutge-compilers`: Lists all supported compilers.
-- `jutge-available-compilers`: Lists all availablecompilers.
+- `jutge-available-compilers`: Lists all available compilers.
 - `jutge-submit`: Correct a Jutge.org submission just as if it was sent to the website.
 
 ### jutge-make-problem
