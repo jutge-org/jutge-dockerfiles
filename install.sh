@@ -15,7 +15,7 @@ adduser --disabled-password --gecos '' worker9
 cp /root/.inputrc /home/worker
 chown -R worker:worker /home/worker
 
-# Update and upgrade apt-get packages
+# Update and upgrade apt packages
 apt-get --yes update
 apt-get --yes upgrade
 
@@ -36,10 +36,15 @@ apt-get --yes install build-essential clang
 apt-get --yes install python3 python3-pip python3-pillow python3-cairo python3-yaml
 
 # Install python3 jutge packages
-pip3 install jutge jutge-toolkit easyinput yogi turtle-pil pytokr
+pip3 install jutge-toolkit turtle-pil easyinput yogi pytokr
 
 # Install more python3 packages
 pip3 install mypy pycodestyle
+
+# Install codon
+/bin/bash -c "$(curl -fsSL https://exaloop.io/install.sh)"
+mv /root/.codon /opt/codon
+ln -s /opt/codon/bin/codon /usr/local/bin/codon
 
 # Install jutge-vinga
 jutge-install-vinga
