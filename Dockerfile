@@ -8,6 +8,8 @@ COPY install.sh /root/
 
 COPY _inputrc /root/.inputrc
 
+COPY wspace /usr/local/bin
+
 WORKDIR /root
 
 RUN /bin/bash /root/install.sh $type
