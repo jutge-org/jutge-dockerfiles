@@ -12,7 +12,7 @@ COPY wspace /usr/local/bin
 
 WORKDIR /root
 
-RUN /bin/bash /root/install.sh $type
+RUN /bin/bash /root/install.sh $type 2>&1 | tee /root/install.txt
 
 USER worker
 

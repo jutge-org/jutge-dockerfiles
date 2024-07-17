@@ -1,3 +1,6 @@
+#echo commands
+set -x
+
 # Update and upgrade apt packages
 apt-get --yes update
 apt-get --yes upgrade
@@ -35,10 +38,10 @@ apt-get --yes install build-essential clang
 apt-get --yes install python3 python3-pip python3-pillow python3-cairo python3-yaml python3-venv
 
 # Install python3 jutge packages
-pip3 install jutge-toolkit turtle-pil easyinput yogi pytokr
+pip3 install --break-system-packages jutge-toolkit turtle-pil easyinput yogi pytokr
 
 # Install more python3 packages
-pip3 install mypy pycodestyle
+pip3 install --break-system-packages mypy pycodestyle
 
 # Install jutge-vinga
 jutge-install-vinga
@@ -47,9 +50,10 @@ jutge-install-vinga
 if [[ $1 = "full" ]] || [[ $1 = "server" ]] ; then
     curl -sSL https://dist.crystal-lang.org/apt/setup.sh | sudo bash
 
-    apt-get --yes install algol68g basic256 beef bf bwbasic chicken-bin libchicken-dev clisp erlang f2c fpc gambc gccgo gdc gfortran ghc gnat gobjc golang gprolog guile-2.2 lua5.3 nodejs ocaml-native-compilers openjdk-8-jdk-headless r-base r-base-core r-base-dev r-cran-vgam r-recommended rhino ruby stalin tcl php-cli rustc crystal
+    apt-get --yes install algol68g basic256 beef bwbasic chicken-bin libchicken-dev clisp erlang f2c fpc gambc gccgo gdc gfortran ghc gnat gobjc golang gprolog guile-2.2 lua5.3 nodejs ocaml openjdk-8-jdk-headless r-base r-base-core r-base-dev r-cran-vgam r-recommended rhino ruby stalin tcl php-cli rustc crystal
 
     # does not work: apt-get --yes install nim
+    # does not work: apt-get --yes install bf
     # does not work: jutge-install-verilog
 
     # Install codon
