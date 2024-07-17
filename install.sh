@@ -3,7 +3,7 @@ apt-get --yes update
 apt-get --yes upgrade
 
 # Install initial tools
-apt-get --yes install tzdata imagemagick joe nano tree ack wget curl moreutils less adduser
+apt-get --yes install tzdata imagemagick joe nano tree ack wget curl moreutils less adduser sudo
 
 # Add users
 adduser --disabled-password --gecos '' worker
@@ -46,7 +46,9 @@ jutge-install-vinga
 # Install exotic compilers
 if [[ $1 = "full" ]] || [[ $1 = "server" ]] ; then
     curl -sSL https://dist.crystal-lang.org/apt/setup.sh | sudo bash
+
     apt-get --yes install algol68g basic256 beef bf bwbasic chicken-bin libchicken-dev clisp erlang f2c fpc gambc gccgo gdc gfortran ghc gnat gobjc golang gprolog guile-2.2 lua5.3 nodejs ocaml-native-compilers openjdk-8-jdk-headless r-base r-base-core r-base-dev r-cran-vgam r-recommended rhino ruby stalin tcl php-cli rustc crystal
+
     # does not work: apt-get --yes install nim
     # does not work: jutge-install-verilog
 
