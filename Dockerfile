@@ -18,6 +18,6 @@ USER worker
 
 WORKDIR /home/worker
 
-ENV USER worker
+ENV USER=worker
 
-ENV LANG C.UTF-8
+ENV LANG=C.UTF-8
