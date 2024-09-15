@@ -6,7 +6,7 @@ apt-get --yes update
 apt-get --yes upgrade
 
 # Install initial tools
-apt-get --yes install tzdata imagemagick joe nano tree ack wget curl moreutils less adduser sudo
+apt-get --yes install imagemagick joe nano tree ack wget curl moreutils less adduser sudo
 
 # Add users
 adduser --disabled-password --gecos '' worker
