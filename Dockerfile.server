@@ -1,4 +1,3 @@
-
 FROM ubuntu
 WORKDIR /root
 ENV DEBIAN_FRONTEND=noninteractive
