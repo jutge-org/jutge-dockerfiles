@@ -2,23 +2,23 @@
 # to docker build, so that the same GID is used in the container,
 # otherwise the 'worker' user cannot access the docker socket.
 DOCKER_GID := $(shell getent group docker | cut -d: -f3)
+ARG := --build-arg DOCKER_GID=$(DOCKER_GID)
 
 all: full lite server
 
 jutge-vinga-source: 
-	rm -rf jutge-vinga
-	git clone github:jutge-org/jutge-vinga.git jutge-vinga-source
+	@rm -rf jutge-vinga
+	@git clone github:jutge-org/jutge-vinga.git jutge-vinga-source
 
-full:
-	docker build -t jutge-full . --build-arg type=full
+full: jutge-vinga-source
+	docker build -t jutge-full -f Dockerfile.full $(ARG) .
 
-lite:
-	docker build -t jutge-lite . --build-arg type=lite
+lite: jutge-vinga-source
+	docker build -t jutge-lite -f Dockerfile.lite $(ARG) . 
 
 server: jutge-vinga-source
-	@echo $(DOCKER_GID)
-	docker build -t jutge-server -f Dockerfile.server --build-arg DOCKER_GID=$(DOCKER_GID) .
+	docker build -t jutge-server -f Dockerfile.server $(ARG) .
 
-test:
-	docker build -t jutge-test . --build-arg type=test
+test: jutge-vinga-source
+	docker build -t jutge-test  -f Dockerfile.test $(ARG) . 
 

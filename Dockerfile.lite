@@ -31,17 +31,16 @@ RUN apt-get update && apt-get install -y curl && \
 # + change the 'docker' group to match the GID of the host's docker group
 RUN usermod -a -G docker worker && \
     groupmod -g $DOCKER_GID docker
-
 # Using docker inside the container requires binding the docker socket:
 #   docker run -v /var/run/docker.sock:/var/run/docker.sock ...
 # (from: https://stackoverflow.com/a/46918825)
 
+# Install build-essential (gcc, g++, make, etc.)
+RUN apt-get --yes install build-essential
+
 # Fix convert, because it does not generate the eps files
 # see https://askubuntu.com/questions/1081695/error-during-converting-jpg-to-pdf
 RUN perl -p -i.bak -e 's/domain="coder" rights="none"/domain="coder" rights="read|write"/g' /etc/ImageMagick-6/policy.xml
-
-# Install build-essential (gcc, g++, make, etc.)
-RUN apt-get --yes install build-essential
 
 # Compile 'jutge-vinga' (taking source from the build context) using container compilers and install it
 # To be able to do this, the source code has to be cloned outside the container, since it is a private repository
@@ -57,40 +56,14 @@ RUN apt-get --yes install clang
 # Install Python3
 RUN apt-get --yes install python3 python3-pip python3-pillow python3-cairo python3-yaml python3-venv
 
-# Install extra languages
-RUN apt-get --yes install algol68g basic256 beef bwbasic chicken-bin libchicken-dev \
-    clisp erlang f2c fpc gambc gccgo gdc gfortran ghc gnat gobjc golang gprolog guile-2.2 \
-    lua5.3 nodejs ocaml openjdk-11-jdk-headless r-base r-base-core r-base-dev r-cran-vgam \
-    r-recommended rhino ruby stalin tcl php-cli rustc crystal
-
-# Codon
-ADD https://exaloop.io/install.sh /root/install-codon.sh
-# FIXME: Why install-codon.sh does not return 0?
-RUN bash /root/install-codon.sh || true
-RUN mv /root/.codon /opt/codon && \
-    ln -s /opt/codon/bin/codon /usr/local/bin/codon
-
-# Clojure
-ADD https://github.com/clojure/brew-install/releases/latest/download/linux-install.sh /root/install-clojure.sh
-RUN bash /root/install-clojure.sh
-
-# Crystal
-ADD https://dist.crystal-lang.org/apt/setup.sh /root/install-crystal.sh
-RUN bash /root/install-crystal.sh 
-
-# Whitespace
-COPY wspace /usr/local/bin/wspace
-RUN chmod 755 /usr/local/bin/wspace
-
 # Install jutge-toolkit and jutge-server-toolkit from source
 RUN pip3 install --break-system-packages turtle-pil easyinput yogi pytokr mypy pycodestyle \
     'jutge-toolkit @ git+https://github.com/jutge-org/jutge-toolkit' \
     'jutge-server-toolkit @ git+https://github.com/jutge-org/jutge-server-toolkit' && \
     pip3 cache purge
 
-# Install Python libraries
-COPY install-python-libraries.sh /root/.
-RUN bash /root/install-python-libraries.sh
+# LaTeX (lite)
+RUN apt-get --yes install texlive-latex-extra texlive-games texlive-pstricks
 
 # apt clean
 RUN apt-get --yes clean

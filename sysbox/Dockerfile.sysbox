@@ -1,8 +1,0 @@
-FROM nestybox/ubuntu-bionic-docker
-WORKDIR /root
-
-COPY start-docker-then-bash.sh .
-COPY install-docker-images.sh .
-RUN chmod u+x *.sh
-
-ENTRYPOINT [ "/root/start-docker-then-bash.sh" ]

@@ -67,8 +67,7 @@ RUN apt-get --yes install algol68g basic256 beef bwbasic chicken-bin libchicken-
 ADD https://exaloop.io/install.sh /root/install-codon.sh
 # FIXME: Why install-codon.sh does not return 0?
 RUN bash /root/install-codon.sh || true
-RUN mv /root/.codon /opt/codon && \
-    ln -s /opt/codon/bin/codon /usr/local/bin/codon
+RUN mv /root/.codon /opt/codon && ln -s /opt/codon/bin/codon /usr/local/bin/codon
 
 # Clojure
 ADD https://github.com/clojure/brew-install/releases/latest/download/linux-install.sh /root/install-clojure.sh
@@ -87,6 +86,9 @@ RUN pip3 install --break-system-packages turtle-pil easyinput yogi pytokr mypy p
     'jutge-toolkit @ git+https://github.com/jutge-org/jutge-toolkit' \
     'jutge-server-toolkit @ git+https://github.com/jutge-org/jutge-server-toolkit' && \
     pip3 cache purge
+
+# LaTeX (full)
+RUN apt-get --yes install texlive-latex-extra texlive-games texlive-pstricks
 
 # Install Python libraries
 COPY install-python-libraries.sh /root/.
