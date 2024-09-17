@@ -1,6 +1,9 @@
+
 FROM ubuntu
 WORKDIR /root
 ENV DEBIAN_FRONTEND=noninteractive
+
+ARG DOCKER_GID
 
 # Update ubuntu packages
 RUN apt-get --yes update && apt-get --yes upgrade
@@ -19,6 +22,21 @@ RUN adduser --disabled-password --gecos '' worker
 COPY _inputrc /home/worker/.inputrc
 RUN chown -R worker:worker /home/worker
 
+# Install docker (taken from https://github.com/nestybox/dockerfiles/blob/master/ubuntu-bionic-systemd-docker/Dockerfile)
+RUN apt-get update && apt-get install -y curl && \
+    rm -rf /var/lib/apt/lists/* && \
+    curl -fsSL https://get.docker.com -o get-docker.sh&& \
+    sh get-docker.sh
+
+# Add user "admin" to the Docker group    
+# + change the 'docker' group to match the GID of the host's docker group
+RUN usermod -a -G docker worker && \
+    groupmod -g $DOCKER_GID docker
+
+# Using docker inside the container requires binding the docker socket:
+#   docker run -v /var/run/docker.sock:/var/run/docker.sock ...
+# (from: https://stackoverflow.com/a/46918825)
+
 # Install C compilers
 RUN apt-get --yes install build-essential clang
 
@@ -33,6 +51,8 @@ RUN pip3 install --break-system-packages turtle-pil easyinput yogi pytokr mypy p
     'jutge-toolkit @ git+https://github.com/jutge-org/jutge-toolkit' \
     'jutge-server-toolkit @ git+https://github.com/jutge-org/jutge-server-toolkit' && \
     pip3 cache purge
+
+
 
 # Compile 'jutge-vinga' (taking source from the build context) using container compilers and install it
 # To be able to do this, the source code has to be cloned outside the container, since it is a private repository
