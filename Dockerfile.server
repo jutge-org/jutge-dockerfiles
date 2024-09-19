@@ -63,6 +63,12 @@ RUN apt-get --yes install algol68g basic256 beef bwbasic chicken-bin libchicken-
     lua5.3 nodejs ocaml openjdk-11-jdk-headless r-base r-base-core r-base-dev r-cran-vgam \
     r-recommended rhino ruby stalin tcl php-cli rustc crystal
 
+# Zig
+ADD https://ziglang.org/download/0.13.0/zig-linux-x86_64-0.13.0.tar.xz /root/zig-linux-x86_64-0.13.0.tar.xz
+RUN tar -xJf /root/zig-linux-x86_64-0.13.0.tar.xz -C /opt && mv /opt/zig-linux-x86_64-0.13.0 /opt/zig
+RUN echo "export PATH=\$PATH:/opt/zig" >> /home/worker/.profile
+ENV PATH="$PATH:/opt/zig"
+
 # Codon
 ADD https://exaloop.io/install.sh /root/install-codon.sh
 # FIXME: Why install-codon.sh does not return 0?
