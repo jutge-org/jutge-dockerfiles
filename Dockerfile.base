@@ -62,5 +62,3 @@ RUN --mount=type=bind,source=jutge-toolkit,target=/root/jutge-toolkit,readwrite 
 # NOTE(pauek): Use separate command because these packages are changed more often
 RUN --mount=type=bind,source=jutge-server-toolkit,target=/root/jutge-server-toolkit,readwrite \
     pip3 install --use-pep517 --break-system-packages /root/jutge-server-toolkit
-
-
