@@ -1,12 +1,11 @@
-# FIXME(pauek): Is it the type ARG which invalidates the cache?
 ARG type=server
+# vinga can be 'compile-vinga' or `download-vinga`
+ARG vinga=compile-vinga
 
 ## base ###########################################################################################
-FROM ubuntu AS base
+FROM ubuntu AS builder
 WORKDIR /root
 ENV DEBIAN_FRONTEND=noninteractive
-
-ARG type=server
 
 # Update ubuntu packages
 RUN apt-get --yes update && apt-get --yes upgrade
@@ -39,7 +38,8 @@ RUN apt-get --yes install python3 python3-pip python3-pillow python3-cairo pytho
 # Compile 'jutge-vinga' (taking source from the build context) using container compilers 
 # and install it. To be able to do this, the source code has to be cloned outside the container, 
 # since it is a private repository.
-#
+
+FROM builder as compile-vinga
 RUN --mount=type=bind,source=jutge-vinga,target=/root/jutge-vinga,readwrite \
     make -C /root/jutge-vinga/src && \
     cp /root/jutge-vinga/src/jutge-vinga /usr/local/bin/jutge-vinga && \
@@ -47,6 +47,14 @@ RUN --mount=type=bind,source=jutge-vinga,target=/root/jutge-vinga,readwrite \
 RUN echo "worker ALL=(ALL) NOPASSWD: /usr/local/bin/jutge-vinga" | \
     (sudo su -c 'EDITOR="tee -a" visudo -f /etc/sudoers.d/worker')
 
+# Download vinga from the last version uploaded
+FROM builder as download-vinga
+
+RUN wget -O /usr/local/bin/jutge-vinga https://github.com/jutge-org/jutge-vinga-bin/raw/master/jutge-vinga-linux
+RUN chown root:root /usr/local/bin/jutge-vinga
+RUN chmod 700 /usr/local/bin/jutge-vinga
+
+FROM ${vinga} AS base
 
 ## lite ###########################################################################################
 FROM base AS lite
