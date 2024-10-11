@@ -55,9 +55,12 @@ RUN echo "worker ALL=(ALL) NOPASSWD: /usr/local/bin/jutge-vinga" | \
 RUN pip3 install --break-system-packages turtle-pil easyinput yogi pytokr mypy pycodestyle
 
 # Install `jutge-toolkit` and `jutge-server-toolkit` from local submodule
+# FIXME(pauek): We should fix both packages to conform to new installation format...
 RUN --mount=type=bind,source=jutge-toolkit,target=/root/jutge-toolkit,readwrite \
-    --mount=type=bind,source=jutge-server-toolkit,target=/root/jutge-server-toolkit,readwrite \
-    # FIXME(pauek): We should fix both packages to conform to new installation format...
-    pip3 install --use-pep517 --break-system-packages /root/jutge-toolkit /root/jutge-server-toolkit
+    pip3 install --use-pep517 --break-system-packages /root/jutge-toolkit
+
+# NOTE(pauek): Use separate command because these packages are changed more often
+RUN --mount=type=bind,source=jutge-server-toolkit,target=/root/jutge-server-toolkit,readwrite \
+    pip3 install --use-pep517 --break-system-packages /root/jutge-server-toolkit
 
 

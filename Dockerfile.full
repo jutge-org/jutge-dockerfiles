@@ -1,4 +1,4 @@
-FROM jutge.org:server-base
+FROM jutge-org/server-base
 
 # LaTeX (full)
 RUN apt-get --yes install texlive-latex-extra texlive-games texlive-pstricks

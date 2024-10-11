@@ -1,4 +1,4 @@
-FROM jutge.org:base
+FROM jutge-org/base
 
 # Install Clang
 RUN apt-get --yes install clang

@@ -1,4 +1,4 @@
-FROM jutge.org:server-base
+FROM jutge-org/server-base
 
 # Clear cache
 RUN pip3 cache purge
