@@ -39,7 +39,7 @@ RUN apt-get --yes install python3 python3-pip python3-pillow python3-cairo pytho
 # and install it. To be able to do this, the source code has to be cloned outside the container, 
 # since it is a private repository.
 
-FROM builder as compile-vinga
+FROM builder AS compile-vinga
 RUN --mount=type=bind,source=jutge-vinga,target=/root/jutge-vinga,readwrite \
     make -C /root/jutge-vinga/src && \
     cp /root/jutge-vinga/src/jutge-vinga /usr/local/bin/jutge-vinga && \
@@ -48,7 +48,7 @@ RUN echo "worker ALL=(ALL) NOPASSWD: /usr/local/bin/jutge-vinga" | \
     (sudo su -c 'EDITOR="tee -a" visudo -f /etc/sudoers.d/worker')
 
 # Download vinga from the last version uploaded
-FROM builder as download-vinga
+FROM builder AS download-vinga
 
 RUN wget -O /usr/local/bin/jutge-vinga https://github.com/jutge-org/jutge-vinga-bin/raw/master/jutge-vinga-linux
 RUN chown root:root /usr/local/bin/jutge-vinga
