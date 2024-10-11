@@ -1,0 +1,38 @@
+FROM jutge.org:base
+
+# Install Clang
+RUN apt-get --yes install clang
+
+# Install extra languages
+RUN apt-get --yes install algol68g basic256 beef bwbasic chicken-bin libchicken-dev \
+    clisp erlang f2c fpc gambc gccgo gdc gfortran ghc gnat gobjc golang gprolog guile-2.2 \
+    lua5.3 nodejs ocaml openjdk-11-jdk-headless r-base r-base-core r-base-dev r-cran-vgam \
+    r-recommended rhino ruby stalin tcl php-cli rustc crystal
+
+# Zig
+ADD https://ziglang.org/download/0.13.0/zig-linux-x86_64-0.13.0.tar.xz /root/zig-linux-x86_64-0.13.0.tar.xz
+RUN tar -xJf /root/zig-linux-x86_64-0.13.0.tar.xz -C /opt && \
+    mv /opt/zig-linux-x86_64-0.13.0 /opt/zig && \
+    rm -f /root/zig-linux-x86_64-0.13.0.tar.xz && \
+    echo "export PATH=\$PATH:/opt/zig" >> /home/worker/.profile
+ENV PATH="$PATH:/opt/zig"
+
+# Codon
+ADD https://exaloop.io/install.sh /root/install-codon.sh
+# FIXME: Why install-codon.sh does not return 0?
+RUN bash /root/install-codon.sh || true
+RUN mv /root/.codon /opt/codon && \
+    ln -s /opt/codon/bin/codon /usr/local/bin/codon
+
+# Clojure
+ADD https://github.com/clojure/brew-install/releases/latest/download/linux-install.sh /root/install-clojure.sh
+RUN bash /root/install-clojure.sh
+
+# Crystal
+ADD https://dist.crystal-lang.org/apt/setup.sh /root/install-crystal.sh
+RUN bash /root/install-crystal.sh 
+
+# Whitespace
+ADD bin/wspace /usr/local/bin/wspace
+RUN chmod 755 /usr/local/bin/wspace
+

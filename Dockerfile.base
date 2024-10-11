@@ -1,0 +1,63 @@
+FROM ubuntu AS base
+WORKDIR /root
+ENV DEBIAN_FRONTEND=noninteractive
+
+# NOTE(pauek): The UID and GID should be passed from the system user, to make 
+# permissions easy when mounting volumes.
+ARG UID
+ARG GID
+
+# Update ubuntu packages
+RUN apt-get --yes update && apt-get --yes upgrade
+
+# Set local timezone
+RUN apt-get --yes install tzdata && \
+    ln -fs /usr/share/zoneinfo/Europe/Madrid /etc/localtime && \
+    dpkg-reconfigure --frontend noninteractive tzdata
+
+# Install initial tools
+RUN apt-get --yes install \
+    tzdata imagemagick joe nano tree ack wget curl moreutils less adduser sudo git
+
+# Ubuntu images now include a default user 'ubuntu' with UID:GID 1000:1000
+# Remove it to avoid conflict with the host user, which might be 1000:1000.
+RUN deluser --remove-home ubuntu
+
+# Create user 'worker'
+RUN addgroup --gid ${GID} worker
+RUN adduser --uid ${UID} --gid ${GID} --disabled-password worker 
+ADD inputrc /home/worker/.inputrc
+RUN chown -R worker:worker /home/worker
+
+# Fix convert, because it does not generate the eps files
+# see https://askubuntu.com/questions/1081695/error-during-converting-jpg-to-pdf
+RUN perl -p -i.bak -e 's/domain="coder" rights="none"/domain="coder" rights="read|write"/g' \
+    /etc/ImageMagick-6/policy.xml
+
+# Install 
+RUN apt install --yes make gcc binutils
+
+# Install Python3
+RUN apt-get --yes install python3 python3-pip python3-pillow python3-cairo python3-yaml python3-venv
+
+# Compile 'jutge-vinga' (taking source from the build context) using container compilers 
+# and install it. To be able to do this, the source code has to be cloned outside the container, 
+# since it is a private repository.
+#
+RUN --mount=type=bind,source=jutge-vinga,target=/root/jutge-vinga,readwrite \
+    make -C /root/jutge-vinga/src && \
+    cp /root/jutge-vinga/src/jutge-vinga /usr/local/bin/jutge-vinga && \
+    chmod u=rws,g=rs,o=rx /usr/local/bin/jutge-vinga
+RUN echo "worker ALL=(ALL) NOPASSWD: /usr/local/bin/jutge-vinga" | \
+    (sudo su -c 'EDITOR="tee -a" visudo -f /etc/sudoers.d/worker')
+
+# Install jutge-toolkit and jutge-server-toolkit from source
+RUN pip3 install --break-system-packages turtle-pil easyinput yogi pytokr mypy pycodestyle
+
+# Install `jutge-toolkit` and `jutge-server-toolkit` from local submodule
+RUN --mount=type=bind,source=jutge-toolkit,target=/root/jutge-toolkit,readwrite \
+    --mount=type=bind,source=jutge-server-toolkit,target=/root/jutge-server-toolkit,readwrite \
+    # FIXME(pauek): We should fix both packages to conform to new installation format...
+    pip3 install --use-pep517 --break-system-packages /root/jutge-toolkit /root/jutge-server-toolkit
+
+
