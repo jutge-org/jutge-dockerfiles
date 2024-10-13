@@ -35,7 +35,7 @@ RUN perl -p -i.bak -e 's/domain="coder" rights="none"/domain="coder" rights="rea
     /etc/ImageMagick-6/policy.xml
 
 # Install 
-RUN apt install --yes make gcc binutils
+RUN apt install --yes make gcc binutils jq httpie
 
 # Install Python3
 RUN apt-get --yes install python3 python3-pip python3-pillow python3-cairo python3-yaml python3-venv
