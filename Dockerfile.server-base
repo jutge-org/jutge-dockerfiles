@@ -12,7 +12,7 @@ RUN apt-get --yes install algol68g basic256 beef bwbasic chicken-bin libchicken-
 RUN chown worker:worker /opt
 
 # Zig
-RUN http GET https://ziglang.org/download/index.json \
+RUN curl https://ziglang.org/download/index.json \
 	| jq '.["master"].["x86_64-linux"].["tarball"]' | tr -d '"'  \
 	| xargs wget && \
 	tar -xJf zig-linux-*.tar.xz -C /opt && \
@@ -20,6 +20,11 @@ RUN http GET https://ziglang.org/download/index.json \
     rm -f /root/zig.tar.xz && \
     echo "export PATH=\$PATH:/opt/zig" >> /home/worker/.profile
 ENV PATH="$PATH:/opt/zig"
+
+# Bun
+USER worker
+RUN curl -fsSL https://bun.sh/install | bash
+USER root
 
 # Codon
 ADD https://exaloop.io/install.sh /root/install-codon.sh

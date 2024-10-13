@@ -17,7 +17,7 @@ RUN apt-get --yes install tzdata && \
 
 # Install initial tools
 RUN apt-get --yes install \
-    tzdata imagemagick joe nano tree ack wget curl moreutils less adduser sudo git
+    tzdata imagemagick joe nano tree ack wget curl moreutils less adduser sudo git jq
 
 # Ubuntu images now include a default user 'ubuntu' with UID:GID 1000:1000
 # Remove it to avoid conflict with the host user, which might be 1000:1000.
@@ -35,7 +35,7 @@ RUN perl -p -i.bak -e 's/domain="coder" rights="none"/domain="coder" rights="rea
     /etc/ImageMagick-6/policy.xml
 
 # Install 
-RUN apt install --yes make gcc binutils jq httpie
+RUN apt install --yes make gcc binutils 
 
 # Install Python3
 RUN apt-get --yes install python3 python3-pip python3-pillow python3-cairo python3-yaml python3-venv

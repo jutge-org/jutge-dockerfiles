@@ -3,16 +3,8 @@ FROM jutge-org/server-base
 # LaTeX (full)
 RUN apt-get --yes install texlive-latex-extra texlive-games texlive-pstricks
 
-# Clean cache (as root)
-RUN apt-get --yes clean
-
-# Set user
-USER worker
-WORKDIR /home/worker
-ENV USER=worker
-ENV LANG=C.UTF-8
-
 # Install Python libraries (as user worker!)
+USER worker
 RUN mkdir /opt/pylibs && \
     cd /opt/pylibs && \
     for pylib in "numpy scipy simpy networkx optilog pandas matplotlib more-itertools biopython beautifulsoup4"; do \
@@ -24,8 +16,15 @@ RUN mkdir /opt/pylibs && \
         deactivate; \
         chmod 700 $pylib; \
     done
+USER root
 
-# Clear cache (as worker)
+# Clean cache (as root)
+RUN apt-get --yes clean
 RUN pip3 cache purge
 
+# Set user
+USER worker
+WORKDIR /home/worker
+ENV USER=worker
+ENV LANG=C.UTF-8
 
