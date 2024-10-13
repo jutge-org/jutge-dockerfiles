@@ -32,11 +32,15 @@ ADD https://github.com/clojure/brew-install/releases/latest/download/linux-insta
 RUN bash /root/install-clojure.sh
 
 # Install extra languages
+RUN apt-get --yes install openjdk-11-jdk-headless
+RUN apt-get --yes install php-cli
+RUN apt-get --yes install rustc
+
 # RUN apt-get --yes install algol68g
-# RUN apt-get --yes install beef 
-# RUN apt-get --yes install basic256 bwbasic 
+# RUN apt-get --yes install beef
+# RUN apt-get --yes install basic256 bwbasic
 # RUN apt-get --yes install chicken-bin libchicken-dev guile-2.2 stalin
-# RUN apt-get --yes install clisp 
+# RUN apt-get --yes install clisp
 # RUN apt-get --yes install erlang
 # RUN apt-get --yes install f2c gfortran
 # RUN apt-get --yes install fpc
@@ -46,17 +50,14 @@ RUN bash /root/install-clojure.sh
 # RUN apt-get --yes install gdc
 # RUN apt-get --yes install ghc
 # RUN apt-get --yes install gnat
-# RUN apt-get --yes install gobjc 
+# RUN apt-get --yes install gobjc
 # RUN apt-get --yes install lua5.3
 # RUN apt-get --yes install nodejs
 # RUN apt-get --yes install ocaml
-# RUN apt-get --yes install openjdk-11-jdk-headless
 # RUN apt-get --yes install r-base r-base-core r-base-dev r-cran-vgam r-recommended
 # RUN apt-get --yes install rhino
 # RUN apt-get --yes install ruby
 # RUN apt-get --yes install tcl
-# RUN apt-get --yes install php-cli
-# RUN apt-get --yes install rustc
 # RUN apt-get --yes install crystal
 
 # Crystal
