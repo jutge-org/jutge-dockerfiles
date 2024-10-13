@@ -17,7 +17,7 @@ RUN apt-get --yes install tzdata && \
 
 # Install initial tools
 RUN apt-get --yes install \
-    tzdata imagemagick joe nano tree ack wget curl moreutils less adduser sudo git jq
+    tzdata imagemagick joe nano tree ack wget curl moreutils less adduser sudo git jq unzip
 
 # Ubuntu images now include a default user 'ubuntu' with UID:GID 1000:1000
 # Remove it to avoid conflict with the host user, which might be 1000:1000.
@@ -28,6 +28,7 @@ RUN addgroup --gid ${GID} worker
 RUN adduser --uid ${UID} --gid ${GID} --disabled-password worker 
 ADD inputrc /home/worker/.inputrc
 RUN chown -R worker:worker /home/worker
+RUN chown worker:worker /opt
 
 # Fix convert, because it does not generate the eps files
 # see https://askubuntu.com/questions/1081695/error-during-converting-jpg-to-pdf

@@ -3,14 +3,6 @@ FROM jutge-org/base
 # Install Clang
 RUN apt-get --yes install clang
 
-# Install extra languages
-RUN apt-get --yes install algol68g basic256 beef bwbasic chicken-bin libchicken-dev \
-    clisp erlang f2c fpc gambc gccgo gdc gfortran ghc gnat gobjc golang gprolog guile-2.2 \
-    lua5.3 nodejs ocaml openjdk-11-jdk-headless r-base r-base-core r-base-dev r-cran-vgam \
-    r-recommended rhino ruby stalin tcl php-cli rustc crystal
-
-RUN chown worker:worker /opt
-
 # Zig
 RUN curl https://ziglang.org/download/index.json \
 	| jq '.["master"].["x86_64-linux"].["tarball"]' | tr -d '"'  \
@@ -23,8 +15,10 @@ ENV PATH="$PATH:/opt/zig"
 
 # Bun
 USER worker
-RUN curl -fsSL https://bun.sh/install | bash
+RUN curl -fsSL https://bun.sh/install | bash && \
+	mv ~/.bun /opt/bun
 USER root
+RUN echo 'export PATH=$PATH:/opt/bun/bin' > /etc/profile.d/99-bun.sh
 
 # Codon
 ADD https://exaloop.io/install.sh /root/install-codon.sh
@@ -37,11 +31,38 @@ RUN mv /root/.codon /opt/codon && \
 ADD https://github.com/clojure/brew-install/releases/latest/download/linux-install.sh /root/install-clojure.sh
 RUN bash /root/install-clojure.sh
 
+# Install extra languages
+# RUN apt-get --yes install algol68g
+# RUN apt-get --yes install beef 
+# RUN apt-get --yes install basic256 bwbasic 
+# RUN apt-get --yes install chicken-bin libchicken-dev guile-2.2 stalin
+# RUN apt-get --yes install clisp 
+# RUN apt-get --yes install erlang
+# RUN apt-get --yes install f2c gfortran
+# RUN apt-get --yes install fpc
+# RUN apt-get --yes install gambc
+# RUN apt-get --yes install gccgo golang
+# RUN apt-get --yes install gprolog
+# RUN apt-get --yes install gdc
+# RUN apt-get --yes install ghc
+# RUN apt-get --yes install gnat
+# RUN apt-get --yes install gobjc 
+# RUN apt-get --yes install lua5.3
+# RUN apt-get --yes install nodejs
+# RUN apt-get --yes install ocaml
+# RUN apt-get --yes install openjdk-11-jdk-headless
+# RUN apt-get --yes install r-base r-base-core r-base-dev r-cran-vgam r-recommended
+# RUN apt-get --yes install rhino
+# RUN apt-get --yes install ruby
+# RUN apt-get --yes install tcl
+# RUN apt-get --yes install php-cli
+# RUN apt-get --yes install rustc
+# RUN apt-get --yes install crystal
+
 # Crystal
-ADD https://dist.crystal-lang.org/apt/setup.sh /root/install-crystal.sh
-RUN bash /root/install-crystal.sh 
+# ADD https://dist.crystal-lang.org/apt/setup.sh /root/install-crystal.sh
+# RUN bash /root/install-crystal.sh 
 
 # Whitespace
-ADD bin/wspace /usr/local/bin/wspace
-RUN chmod 755 /usr/local/bin/wspace
-
+# ADD bin/wspace /usr/local/bin/wspace
+# RUN chmod 755 /usr/local/bin/wspace
