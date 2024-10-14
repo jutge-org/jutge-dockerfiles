@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM ubuntu:22.04
 
 ARG type
 # type can be full, lite, test or server
