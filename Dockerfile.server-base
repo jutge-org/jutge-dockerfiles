@@ -35,6 +35,7 @@ RUN bash /root/install-clojure.sh
 RUN apt-get --yes install openjdk-11-jdk-headless
 RUN apt-get --yes install php-cli
 RUN apt-get --yes install rustc
+RUN apt-get --yes install ghc
 
 # RUN apt-get --yes install algol68g
 # RUN apt-get --yes install beef
@@ -48,7 +49,6 @@ RUN apt-get --yes install rustc
 # RUN apt-get --yes install gccgo golang
 # RUN apt-get --yes install gprolog
 # RUN apt-get --yes install gdc
-# RUN apt-get --yes install ghc
 # RUN apt-get --yes install gnat
 # RUN apt-get --yes install gobjc
 # RUN apt-get --yes install lua5.3
