@@ -1,0 +1,4 @@
+FROM jutge-org/base:latest
+USER root
+RUN apt-get --yes install texlive-latex-extra texlive-games texlive-pstricks
+USER worker

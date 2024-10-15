@@ -1,7 +1,13 @@
-FROM jutge-org/server-base
+FROM jutge-org/base:latest
+USER root
+RUN pip3 install --break-system-packages turtle-pil easyinput yogi pytokr mypy pycodestyle
 
-# LaTeX (full)
-RUN apt-get --yes install texlive-latex-extra texlive-games texlive-pstricks
+# Codon (as root)
+ADD https://exaloop.io/install.sh /root/install-codon.sh
+# FIXME: Why install-codon.sh does not return 0?
+RUN bash /root/install-codon.sh || true
+RUN mv /root/.codon /opt/codon && \
+    ln -s /opt/codon/bin/codon /usr/local/bin/codon
 
 # Install Python libraries (as user worker!)
 USER worker
@@ -16,15 +22,5 @@ RUN mkdir /opt/pylibs && \
         deactivate; \
         chmod 700 $pylib; \
     done
-USER root
-
-# Clean cache (as root)
-RUN apt-get --yes clean
 RUN pip3 cache purge
-
-# Set user
-USER worker
-WORKDIR /home/worker
-ENV USER=worker
-ENV LANG=C.UTF-8
 

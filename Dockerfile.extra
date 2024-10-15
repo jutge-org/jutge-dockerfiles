@@ -1,7 +1,5 @@
-FROM jutge-org/base
-
-# Install Clang
-RUN apt-get --yes install clang
+FROM jutge-org/base:latest
+USER root
 
 # Zig
 RUN curl https://ziglang.org/download/index.json \
@@ -20,22 +18,9 @@ RUN curl -fsSL https://bun.sh/install | bash && \
 USER root
 RUN echo 'export PATH=$PATH:/opt/bun/bin' > /etc/profile.d/99-bun.sh
 
-# Codon
-ADD https://exaloop.io/install.sh /root/install-codon.sh
-# FIXME: Why install-codon.sh does not return 0?
-RUN bash /root/install-codon.sh || true
-RUN mv /root/.codon /opt/codon && \
-    ln -s /opt/codon/bin/codon /usr/local/bin/codon
-
-# Clojure
-ADD https://github.com/clojure/brew-install/releases/latest/download/linux-install.sh /root/install-clojure.sh
-RUN bash /root/install-clojure.sh
-
 # Install extra languages
-RUN apt-get --yes install openjdk-11-jdk-headless
 RUN apt-get --yes install php-cli
 RUN apt-get --yes install rustc
-RUN apt-get --yes install ghc
 
 # RUN apt-get --yes install algol68g
 # RUN apt-get --yes install beef

@@ -1,18 +1,14 @@
-UID := $(shell id -u)
-GID := $(shell id -g)
-ARGS := --build-arg UID=$(UID) --build-arg GID=$(GID)
+IMAGES := $(shell ls Dockerfile.* | sed 's/Dockerfile.//')
 
-all: lite server full test
-test: base
-lite: base
-server-base: base
-server: server-base
-full: server-base
+all: $(IMAGES)
+cpp: base
+python: base
+latex: base
+extra: base
+java: base
+haskell: base
 
 %: Dockerfile.%
-	docker build $(ARGS) -t jutge-org/$* -f Dockerfile.$* .
+	docker build -t jutge-org/$*:latest -f Dockerfile.$* .
 
 .PHONY: all
-
-clean:
-	docker image rm jutge-org/server-base jutge-org/base jutge-org/lite jutge-org/server jutge-org/full
