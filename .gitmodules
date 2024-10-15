@@ -1,6 +1,3 @@
-[submodule "jutge-toolkit"]
-	path = jutge-toolkit
-	url = github:jutge-org/jutge-toolkit
-[submodule "jutge-server-toolkit"]
-	path = jutge-server-toolkit
-	url = github:jutge-org/jutge-server-toolkit
+[submodule "jutge-run-inside"]
+	path = jutge-run-inside
+	url = github:jutge-org/jutge-run-inside
