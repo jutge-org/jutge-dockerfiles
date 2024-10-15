@@ -2,7 +2,7 @@ FROM ubuntu AS base
 WORKDIR /root
 ENV DEBIAN_FRONTEND=noninteractive
 
-# NOTE(pauek): The UID and GID should be passed from the system user, to make 
+# NOTE(pauek): The UID and GID should be passed from the system user, to make
 # permissions easy when mounting volumes.
 ARG UID
 ARG GID
@@ -15,6 +15,9 @@ RUN apt-get --yes install tzdata && \
     ln -fs /usr/share/zoneinfo/Europe/Madrid /etc/localtime && \
     dpkg-reconfigure --frontend noninteractive tzdata
 
+# jpetit: el imagemagick no deu caler més que per Python.
+# jpetit: cal el git? sembla que només és per desenvolupament propi.
+# jpetit: les altres eines em van molt bé!
 # Install initial tools
 RUN apt-get --yes install \
     tzdata imagemagick joe nano tree ack wget curl moreutils less adduser sudo git jq unzip
@@ -25,24 +28,32 @@ RUN deluser --remove-home ubuntu
 
 # Create user 'worker'
 RUN addgroup --gid ${GID} worker
-RUN adduser --uid ${UID} --gid ${GID} --disabled-password worker 
+RUN adduser --uid ${UID} --gid ${GID} --disabled-password worker
 ADD inputrc /home/worker/.inputrc
 RUN chown -R worker:worker /home/worker
 RUN chown worker:worker /opt
+# jpetit: pel joc d'EDA ens calen més workers (però no sé si cal que vagi aquí)
+
+
 
 # Fix convert, because it does not generate the eps files
 # see https://askubuntu.com/questions/1081695/error-during-converting-jpg-to-pdf
 RUN perl -p -i.bak -e 's/domain="coder" rights="none"/domain="coder" rights="read|write"/g' \
     /etc/ImageMagick-6/policy.xml
+# jpetit: comentari anterior sobre el imagemagick
 
-# Install 
-RUN apt install --yes make gcc binutils 
+# Install
+RUN apt install --yes make gcc binutils
+# jpetit: cal a la base?
 
 # Install Python3
 RUN apt-get --yes install python3 python3-pip python3-pillow python3-cairo python3-yaml python3-venv
+# jpetit: a la base no en deuen caler tantes: pillow i cairo segur que no (qui fa anar el cairo?)
 
-# Compile 'jutge-vinga' (taking source from the build context) using container compilers 
-# and install it. To be able to do this, the source code has to be cloned outside the container, 
+# jpetit: canviar per jutge-vinga-bin
+
+# Compile 'jutge-vinga' (taking source from the build context) using container compilers
+# and install it. To be able to do this, the source code has to be cloned outside the container,
 # since it is a private repository.
 #
 RUN --mount=type=bind,source=jutge-vinga,target=/root/jutge-vinga,readwrite \
@@ -54,6 +65,7 @@ RUN echo "worker ALL=(ALL) NOPASSWD: /usr/local/bin/jutge-vinga" | \
 
 # Install jutge-toolkit and jutge-server-toolkit from source
 RUN pip3 install --break-system-packages turtle-pil easyinput yogi pytokr mypy pycodestyle
+# jpetit: diria que aquests només calen a la de Python
 
 # Install `jutge-toolkit` and `jutge-server-toolkit` from local submodule
 # FIXME(pauek): We should fix both packages to conform to new installation format...
@@ -63,3 +75,5 @@ RUN --mount=type=bind,source=jutge-toolkit,target=/root/jutge-toolkit,readwrite 
 # NOTE(pauek): Use separate command because these packages are changed more often
 RUN --mount=type=bind,source=jutge-server-toolkit,target=/root/jutge-server-toolkit,readwrite \
     pip3 install --use-pep517 --break-system-packages /root/jutge-server-toolkit
+
+#jpetit: la brossa a /root/... no s'ha de netejar?
