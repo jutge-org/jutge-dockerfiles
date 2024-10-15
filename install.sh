@@ -38,10 +38,10 @@ apt-get --yes install build-essential clang
 apt-get --yes install python3 python3-pip python3-pillow python3-cairo python3-yaml python3-venv
 
 # Install python3 jutge packages
-pip3 install --break-system-packages jutge-toolkit jutge-server-toolkit turtle-pil easyinput yogi pytokr
+pip3 install jutge-toolkit jutge-server-toolkit turtle-pil easyinput yogi pytokr
 
 # Install more python3 packages
-pip3 install --break-system-packages mypy pycodestyle
+pip3 install mypy pycodestyle
 
 # Install jutge sudo tools
 jutge-install-sudo-tools
@@ -49,7 +49,7 @@ jutge-install-sudo-tools
 # Install exotic compilers
 if [[ $1 = "full" ]] || [[ $1 = "server" ]] ; then
 
-    apt-get --yes install algol68g basic256 beef bwbasic chicken-bin libchicken-dev clisp erlang f2c fpc gambc gccgo gdc gfortran ghc gnat gobjc golang gprolog guile-2.2 lua5.3 nodejs ocaml openjdk-11-jdk-headless r-base r-base-core r-base-dev r-cran-vgam r-recommended rhino ruby stalin tcl php-cli rustc crystal
+    apt-get --yes install algol68g basic256 beef bwbasic chicken-bin libchicken-dev clisp erlang f2c fpc gambc gccgo gdc gfortran ghc gnat gobjc golang gprolog guile-2.2 lua5.3 nodejs ocaml openjdk-11-jdk-headless r-base r-base-core r-base-dev r-cran-vgam r-recommended rhino ruby stalin tcl php-cli rustc
 
     # does not work: nim
     # does not work: bf
@@ -85,7 +85,6 @@ if [[ $1 = "full" ]] || [[ $1 = "server" ]] ; then
     cd /opt/pylibs
 
     pylibs="numpy scipy simpy networkx optilog pandas matplotlib more-itertools biopython beautifulsoup4"
-
     for pylib in $pylibs
     do
         echo install $pylib
@@ -96,6 +95,9 @@ if [[ $1 = "full" ]] || [[ $1 = "server" ]] ; then
         deactivate
         chmod 700 $pylib    # protect the lib
     done
+
+	# Make the worker own the libraries (avoid errors later)
+	chown -R worker:worker /opt/pylibs
 fi
 
 # Clean shit
