@@ -1,6 +1,3 @@
-[submodule "jutge-vinga"]
-	path = jutge-vinga
-	url = github:jutge-org/jutge-vinga
 [submodule "jutge-toolkit"]
 	path = jutge-toolkit
 	url = github:jutge-org/jutge-toolkit
