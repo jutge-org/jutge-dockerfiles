@@ -21,6 +21,8 @@ RUN echo 'export PATH=$PATH:/opt/bun/bin' > /etc/profile.d/99-bun.sh
 # Install extra languages
 RUN apt-get --yes install php-cli
 RUN apt-get --yes install rustc
+RUN apt-get --yes install lua5.3
+RUN apt-get --yes install gccgo golang
 
 # RUN apt-get --yes install algol68g
 # RUN apt-get --yes install beef
@@ -31,12 +33,10 @@ RUN apt-get --yes install rustc
 # RUN apt-get --yes install f2c gfortran
 # RUN apt-get --yes install fpc
 # RUN apt-get --yes install gambc
-# RUN apt-get --yes install gccgo golang
 # RUN apt-get --yes install gprolog
 # RUN apt-get --yes install gdc
 # RUN apt-get --yes install gnat
 # RUN apt-get --yes install gobjc
-# RUN apt-get --yes install lua5.3
 # RUN apt-get --yes install nodejs
 # RUN apt-get --yes install ocaml
 # RUN apt-get --yes install r-base r-base-core r-base-dev r-cran-vgam r-recommended
