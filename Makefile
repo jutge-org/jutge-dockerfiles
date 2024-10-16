@@ -19,4 +19,5 @@ publish: all
 	@for image in $(IMAGES); do \
 		docker tag jutgeorg/$$image:latest jutgeorg/$$image:$(TAG); \
 		docker push jutgeorg/$$image:$(TAG); \
+		docker push jutgeorg/$$image:latest; \
 	done
