@@ -35,10 +35,10 @@ RUN apt-get -y install python3-yaml python3-chardet
 RUN pip3 install --break-system-packages yogi
 
 # Install jutge-vinga from another container (which we just use to depend on it here)
-COPY --from=ghcr.io/jutge-org/jutge-vinga:0.0.1 /jutge-vinga /usr/local/bin/jutge-vinga
+ADD https://github.com/jutge-org/jutge-vinga-bin/raw/refs/heads/master/jutge-vinga-linux /usr/local/bin/jutge-vinga
+RUN chmod u=rsx,g=rsx,o=rsx /usr/local/bin/jutge-vinga
 RUN echo "worker ALL=(ALL) NOPASSWD: /usr/local/bin/jutge-vinga" | \
     (sudo su -c 'EDITOR="tee -a" visudo -f /etc/sudoers.d/worker')
-RUN chmod u+s /usr/local/bin/jutge-vinga
 
 # Install jutge-run-inside
 ADD jutge-exec/jutge-submit /usr/local/bin/.
