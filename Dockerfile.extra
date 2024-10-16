@@ -7,7 +7,7 @@ RUN curl https://ziglang.org/download/index.json \
 	| xargs wget && \
 	tar -xJf zig-linux-*.tar.xz -C /opt && \
     mv /opt/zig-linux-* /opt/zig && \
-    rm -f /root/zig.tar.xz && \
+    rm -f zig-linux-*.tar.xz && \
     echo "export PATH=\$PATH:/opt/zig" >> /home/worker/.profile
 ENV PATH="$PATH:/opt/zig"
 
