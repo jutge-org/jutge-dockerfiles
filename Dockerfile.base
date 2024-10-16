@@ -41,7 +41,10 @@ RUN echo "worker ALL=(ALL) NOPASSWD: /usr/local/bin/jutge-vinga" | \
 RUN chmod u+s /usr/local/bin/jutge-vinga
 
 # Install jutge-run-inside
-ADD jutge-run-inside/jutge-* /usr/local/bin/.
+ADD jutge-exec/jutge-submit /usr/local/bin/.
+ADD jutge-exec/jutge-start /usr/local/bin/.
+ADD jutge-exec/jutge-sanitize /usr/local/bin/.
+ADD jutge-exec/jutge-somhi /usr/local/bin/.
 
 RUN apt-get -y clean
 
