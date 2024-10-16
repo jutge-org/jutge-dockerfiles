@@ -53,3 +53,8 @@ ENV LANG=C.UTF-8
 
 # We can still install things later doing `USER root`, and
 # change back to `USER worker` at the end of the Dockerfile.
+
+# TODO(pauek): Use CMD ["/usr/local/bin/jutge-run-inside"]
+# We should make the image execute the jutge-run-inside script directly
+# with CMD ["/usr/local/bin/jutge-run-inside"], so that we don't have to pass 
+# any extra parameters.
