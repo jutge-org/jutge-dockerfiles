@@ -23,6 +23,7 @@ RUN apt-get --yes install php-cli
 RUN apt-get --yes install rustc
 RUN apt-get --yes install lua5.3
 RUN apt-get --yes install gccgo golang
+RUN apt-get --yes install r-base r-base-core r-base-dev r-cran-vgam r-recommended
 
 # RUN apt-get --yes install algol68g
 # RUN apt-get --yes install beef
@@ -39,7 +40,6 @@ RUN apt-get --yes install gccgo golang
 # RUN apt-get --yes install gobjc
 # RUN apt-get --yes install nodejs
 # RUN apt-get --yes install ocaml
-# RUN apt-get --yes install r-base r-base-core r-base-dev r-cran-vgam r-recommended
 # RUN apt-get --yes install rhino
 # RUN apt-get --yes install ruby
 # RUN apt-get --yes install tcl
