@@ -1,0 +1,8 @@
+FROM jutgeorg/base
+
+USER root
+RUN pip3 install sootty --break-system-packages
+
+USER worker
+RUN cd /opt && \
+    wget -qO- https://github.com/YosysHQ/oss-cad-suite-build/releases/download/2024-10-17/oss-cad-suite-linux-x64-20241017.tgz | tar xvz

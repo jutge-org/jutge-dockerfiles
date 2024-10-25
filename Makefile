@@ -9,6 +9,7 @@ latex: base
 extra: base
 java: base
 haskell: base
+circuits: base
 
 %: Dockerfile.%
 	docker build -t jutgeorg/$*:latest -f Dockerfile.$* .
