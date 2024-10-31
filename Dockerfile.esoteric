@@ -19,8 +19,10 @@ RUN apt update && apt --yes install tcl
 
 # Crystal
 ADD https://dist.crystal-lang.org/apt/setup.sh /root/install-crystal.sh
-RUN bash /root/install-crystal.sh 
+RUN bash /root/install-crystal.sh
 RUN rm /root/install-crystal.sh
+# The above lines only add crystal to an apt repository
+RUN apt install --yes crystal 
 
 # Julia
 #ADD https://install.julialang.org /root/install-julia.sh
