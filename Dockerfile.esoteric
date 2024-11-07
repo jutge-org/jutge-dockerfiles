@@ -13,7 +13,6 @@ RUN apt update && apt --yes install gprolog
 RUN apt update && apt --yes install gdc
 RUN apt update && apt --yes install gnat
 RUN apt update && apt --yes install gobjc
-RUN apt update && apt --yes install ocaml
 RUN apt update && apt --yes install rhino
 RUN apt update && apt --yes install tcl
 
