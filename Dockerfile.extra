@@ -25,7 +25,7 @@ RUN apt-get --yes install lua5.3
 RUN apt-get --yes install gccgo golang
 RUN apt-get --yes install r-base r-base-core r-base-dev r-cran-vgam r-recommended
 
-# RUN apt-get --yes install nodejs
+RUN apt-get --yes install nodejs
 # RUN apt-get --yes install ruby
 
 
