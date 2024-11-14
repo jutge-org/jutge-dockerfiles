@@ -1,4 +1,4 @@
 FROM jutgeorg/base:latest
 USER root
-RUN apt-get --yes install texlive-latex-extra texlive-games texlive-pstricks
+RUN apt-get --yes --no-install-recommends install texlive-latex-extra texlive-games texlive-pstricks
 USER worker

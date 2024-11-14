@@ -1,4 +1,4 @@
 FROM jutgeorg/base:latest
 USER root
-RUN apt install -y ghc
+RUN apt install -y --no-install-recommends ghc
 USER worker

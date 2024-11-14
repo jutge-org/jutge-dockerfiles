@@ -4,7 +4,7 @@ TAG := $(shell date +%s)
 all: $(IMAGES)
 
 cpp: base
-python: base
+python: cpp
 latex: base
 extra: base
 java: base
