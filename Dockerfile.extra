@@ -32,3 +32,6 @@ RUN apt-get --yes install r-base r-base-core r-base-dev r-cran-vgam r-recommende
 # Whitespace
 # ADD bin/wspace /usr/local/bin/wspace
 # RUN chmod 755 /usr/local/bin/wspace
+
+USER worker
+WORKDIR /home/worker
