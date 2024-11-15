@@ -45,6 +45,10 @@ ADD jutge-exec/jutge-submit /usr/local/bin/.
 ADD jutge-exec/jutge-start /usr/local/bin/.
 ADD jutge-exec/jutge-sanitize /usr/local/bin/.
 ADD jutge-exec/jutge-somhi /usr/local/bin/.
+RUN chmod u=rx,g=rx,o=rx /usr/local/bin/jutge-submit
+RUN chmod u=rx,g=rx,o=rx /usr/local/bin/jutge-start
+RUN chmod u=rx,g=rx,o=rx /usr/local/bin/jutge-sanitize
+RUN chmod u=rx,g=rx,o=rx /usr/local/bin/jutge-somhi
 
 RUN apt-get --yes clean
 
