@@ -10,17 +10,27 @@ RUN mv /root/.codon /opt/codon && \
     ln -s /opt/codon/bin/codon /usr/local/bin/codon
 
 # Install Python libraries (as user worker!)
+
+
 USER worker
 RUN mkdir /opt/pylibs && \
     cd /opt/pylibs && \
-    for pylib in "numpy scipy simpy networkx optilog pandas matplotlib more-itertools biopython beautifulsoup4"; do \
+    for pylib in numpy scipy simpy networkx optilog pandas matplotlib more-itertools biopython beautifulsoup4; do \
         echo install $pylib; \
         python3 -m venv $pylib; \
         source $pylib/bin/activate; \
-        pip install $pylib; \
+        pip install $pylib --break-system-packages; \
         pip show $pylib > $pylib/show.txt; \
         deactivate; \
         chmod 700 $pylib; \
     done
 RUN pip3 cache purge
 
+USER root
+# If the following fails, perhaps python has updated, and the Dockerfile instructions must be updated to follow that.
+# Essentially, this line is a canary.
+RUN ls -lh /usr/local/lib/python3.11/ 
+RUN true && for pylib in numpy scipy simpy networkx optilog pandas matplotlib more-itertools biopython beautifulsoup4; do \
+        ln -s /opt/pylibs/$pylib/lib/python3.11/site-packages/pip /usr/local/lib/python3.11/dist-packages/$pylib; \
+        done
+USER worker        
