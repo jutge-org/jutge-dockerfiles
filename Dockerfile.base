@@ -3,15 +3,15 @@ WORKDIR /root
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Update ubuntu packages
-RUN apt-get --yes update && apt-get --yes upgrade
+RUN apt --yes update && apt --yes upgrade
 
 # Set local timezone
-RUN apt-get --yes install tzdata && \
+RUN apt --yes update && apt --yes upgrade && apt --yes install tzdata && \
     ln -fs /usr/share/zoneinfo/Europe/Madrid /etc/localtime && \
     dpkg-reconfigure --frontend noninteractive tzdata
 
 # Install initial tools
-RUN apt-get --yes install \
+RUN apt --yes update && apt --yes upgrade && apt --yes install \
     tzdata ack moreutils less tree adduser curl wget joe nano sudo unzip jq
 
 # Ubuntu images now include a default user 'ubuntu' (UID:GID 1000:1000).
@@ -28,10 +28,10 @@ RUN for i in $(seq 1 9); do \
 	done
 
 # Install Python3
-RUN apt-get --yes install python3 python3-pip python3-venv 
+RUN apt --yes update && apt --yes upgrade && apt --yes install python3 python3-pip python3-venv 
 
 # NOTE(pauek): Needed by the jutge driver!
-RUN apt-get --yes install python3-yaml python3-chardet
+RUN apt --yes update && apt --yes upgrade && apt --yes install python3-yaml python3-chardet
 RUN pip3 install --break-system-packages yogi
 
 # Install jutge-vinga from another container (which we just use to depend on it here)
@@ -50,7 +50,7 @@ RUN chmod u=rx,g=rx,o=rx /usr/local/bin/jutge-start
 RUN chmod u=rx,g=rx,o=rx /usr/local/bin/jutge-sanitize
 RUN chmod u=rx,g=rx,o=rx /usr/local/bin/jutge-somhi
 
-RUN apt-get --yes clean
+RUN apt --yes clean
 
 # Set user
 USER worker
