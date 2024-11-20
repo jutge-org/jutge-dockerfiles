@@ -19,9 +19,18 @@ RUN rm /root/install-crystal.sh
 # The above lines only add crystal to an apt repository
 RUN apt install --yes crystal 
 
+# Install FreeBasic
+WORKDIR /root/
+RUN apt update && apt --yes install libncurses5-dev libncursesw5-dev libncurses5
+RUN curl -L https://sourceforge.net/projects/fbc/files/FreeBASIC-1.10.1/Binaries-Linux/FreeBASIC-1.10.1-linux-x86_64.tar.gz/download -o FreeBASIC-1.10.1-linux-x86_64.tar.gz
+RUN tar xzf FreeBASIC-1.10.1-linux-x86_64.tar.gz
+WORKDIR /root/FreeBASIC-1.10.1-linux-x86_64
+RUN ./install.sh -i
+
 # Julia
 #ADD https://install.julialang.org /root/install-julia.sh
 #RUN bash /root/install-julia.sh
 #RUN rm /root/install-julia.sh 
 
 USER worker
+WORKDIR /home/worker
