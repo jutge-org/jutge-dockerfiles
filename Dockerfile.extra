@@ -26,7 +26,7 @@ RUN apt --yes update && apt --yes upgrade && apt --yes install gccgo golang
 RUN apt --yes update && apt --yes upgrade && apt --yes install r-base r-base-core r-base-dev r-cran-vgam r-recommended
 
 RUN apt --yes update && apt --yes upgrade && apt --yes install nodejs
-
+RUN apt --yes update && apt --yes upgrade && apt --yes install ruby
 
 
 # Whitespace
