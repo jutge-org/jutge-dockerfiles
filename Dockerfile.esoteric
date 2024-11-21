@@ -32,9 +32,11 @@ RUN rm -rf /root/FreeBASIC-1.10.1-linux-x86_64 /root/FreeBASIC-1.10.1-linux-x86_
 RUN apt --yes update && apt --yes upgrade && apt --yes install nim
 
 # Julia
-#ADD https://install.julialang.org /root/install-julia.sh
-#RUN bash /root/install-julia.sh
-#RUN rm /root/install-julia.sh 
+ADD https://julialang-s3.julialang.org/bin/linux/x64/1.11/julia-1.11.1-linux-x86_64.tar.gz /opt/
+WORKDIR /opt/
+RUN tar zxvf julia-1.11.1-linux-x86_64.tar.gz
+RUN rm julia-1.11.1-linux-x86_64.tar.gz
+RUN ln -s /opt/julia-1.11.1/bin/julia /usr/bin/julia
 
 USER worker
 WORKDIR /home/worker
