@@ -1,24 +1,24 @@
 FROM jutgeorg/base:latest
 USER root
-RUN apt update && apt --yes --no-install-recommends install beef
-RUN apt update && apt --yes --no-install-recommends install basic256 bwbasic
-RUN apt update && apt --yes --no-install-recommends install chicken-bin libchicken-dev guile-2.2 stalin
-RUN apt update && apt --yes --no-install-recommends install clisp
-RUN apt update && apt --yes --no-install-recommends install erlang
-RUN apt update && apt --yes --no-install-recommends install f2c gfortran 
-RUN apt update && apt --yes --no-install-recommends install fpc
-RUN apt update && apt --yes --no-install-recommends install swi-prolog
-RUN apt update && apt --yes --no-install-recommends install gdc
-RUN apt update && apt --yes --no-install-recommends install gnat
-RUN apt update && apt --yes --no-install-recommends install gobjc
+RUN apt-get update && apt-get --yes --no-install-recommends install beef
+RUN apt-get update && apt-get --yes --no-install-recommends install basic256 bwbasic
+RUN apt-get update && apt-get --yes --no-install-recommends install chicken-bin libchicken-dev guile-2.2 stalin
+RUN apt-get update && apt-get --yes --no-install-recommends install clisp
+RUN apt-get update && apt-get --yes --no-install-recommends install erlang
+RUN apt-get update && apt-get --yes --no-install-recommends install f2c gfortran 
+RUN apt-get update && apt-get --yes --no-install-recommends install fpc
+RUN apt-get update && apt-get --yes --no-install-recommends install swi-prolog
+RUN apt-get update && apt-get --yes --no-install-recommends install gdc
+RUN apt-get update && apt-get --yes --no-install-recommends install gnat
+RUN apt-get update && apt-get --yes --no-install-recommends install gobjc
 
 # Crystal
 ADD https://dist.crystal-lang.org/apt/setup.sh /root/install-crystal.sh
-RUN apt update && apt --yes --no-install-recommends install gnupg
+RUN apt-get update && apt-get --yes --no-install-recommends install gnupg
 RUN bash /root/install-crystal.sh
 RUN rm /root/install-crystal.sh
-# The above lines only add crystal to an apt repository
-RUN apt install --yes --no-install-recommends crystal 
+# The above lines only add crystal to an apt-get repository
+RUN apt-get install --yes --no-install-recommends crystal 
 
 # Julia
 ADD https://julialang-s3.julialang.org/bin/linux/x64/1.11/julia-1.11.1-linux-x86_64.tar.gz /opt/

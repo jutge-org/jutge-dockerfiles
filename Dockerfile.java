@@ -1,11 +1,11 @@
 FROM jutgeorg/base:latest
 USER root
-RUN apt update && apt --yes --no-install-recommends install openjdk-17-jdk-headless
+RUN apt-get update && apt-get --yes --no-install-recommends install openjdk-17-jdk-headless
 
-RUN apt update && apt --yes --no-install-recommends install kotlin
+RUN apt-get update && apt-get --yes --no-install-recommends install kotlin
 
 # Required for clj to work
-RUN apt --yes --no-install-recommends install rlwrap
+RUN apt-get --yes --no-install-recommends install rlwrap
 ADD https://github.com/clojure/brew-install/releases/latest/download/linux-install.sh /root/install-clojure.sh
 RUN bash /root/install-clojure.sh
 
