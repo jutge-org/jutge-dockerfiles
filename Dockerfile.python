@@ -1,14 +1,14 @@
-FROM jutgeorg/base:latest
+FROM jutgeorg/cpp:latest
 USER root
 RUN pip3 install --break-system-packages turtle-pil easyinput yogi pytokr mypy pycodestyle
 
+RUN apt update && apt --yes --no-install-recommends install zlib1g-dev
 # Codon (as root)
 ADD https://exaloop.io/install.sh /root/install-codon.sh
 # FIXME: Why install-codon.sh does not return 0?
 RUN bash /root/install-codon.sh || true
 RUN mv /root/.codon /opt/codon && \
     ln -s /opt/codon/bin/codon /usr/local/bin/codon
-
 # Install Python libraries (as user worker!)
 
 
