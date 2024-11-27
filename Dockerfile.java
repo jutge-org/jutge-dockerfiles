@@ -1,8 +1,8 @@
 FROM jutgeorg/base:latest
 USER root
-RUN apt-get update && apt-get --yes --no-install-recommends install openjdk-17-jdk-headless
+RUN apt-get --yes --no-install-recommends install openjdk-17-jdk-headless
 
-RUN apt-get update && apt-get --yes --no-install-recommends install kotlin
+RUN apt-get --yes --no-install-recommends install kotlin
 
 # Required for clj to work
 RUN apt-get --yes --no-install-recommends install rlwrap
