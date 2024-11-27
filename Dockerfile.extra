@@ -26,10 +26,8 @@ RUN apt-get --yes --no-install-recommends install rustc
 RUN apt-get --yes --no-install-recommends install lua5.3
 RUN apt-get --yes --no-install-recommends install gccgo golang
 RUN apt-get --yes --no-install-recommends install r-base r-base-core r-base-dev r-cran-vgam r-recommended
-
 RUN apt-get --yes --no-install-recommends install nodejs
-# RUN apt-get --yes --no-install-recommends install ruby
-
+RUN apt-get --yes --no-install-recommends install ruby
 
 # Whitespace
 # ADD bin/wspace /usr/local/bin/wspace
