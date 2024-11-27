@@ -1,0 +1,10 @@
+FROM jutgeorg/base:latest
+USER root
+RUN apt --yes update && apt --yes upgrade && apt --yes install texlive-latex-extra texlive-games texlive-pstricks
+WORKDIR /root
+ADD https://github.com/jutge-org/jutge-toolkit/archive/refs/heads/main.zip /root/jutge-toolkit-main.zip
+RUN unzip /root/jutge-toolkit-main.zip
+RUN pip3 install --break-system-packages /root/jutge-toolkit-main
+
+USER worker
+WORKDIR /home/worker
