@@ -27,6 +27,9 @@ RUN for i in $(seq 1 9); do \
 		adduser --disabled-password --gecos '' worker$i; \
 	done
 
+# Create process killer after compilation with hardcoded uid 1015
+RUN adduser --disabled-password --gecos '' work-cleaner --uid 1015    
+
 # Install Python3
 RUN apt-get --yes --no-install-recommends install python3 python3-pip python3-venv 
 
@@ -37,7 +40,7 @@ RUN pip3 install --break-system-packages yogi
 # Install jutge-vinga from another container (which we just use to depend on it here)
 ADD https://github.com/jutge-org/jutge-vinga-bin/raw/refs/heads/main/jutge-vinga-linux /usr/local/bin/jutge-vinga
 RUN chmod u=rsx,g=rsx,o=rsx /usr/local/bin/jutge-vinga
-RUN echo "worker ALL=(ALL) NOPASSWD: /usr/local/bin/jutge-vinga" | \
+RUN echo "worker ALL=(ALL) NOPASSWD: /usr/local/bin/jutge-somhi" | \
     (sudo su -c 'EDITOR="tee -a" visudo -f /etc/sudoers.d/worker')
 
 # Install jutge-run-inside
@@ -45,6 +48,11 @@ ADD jutge-exec/jutge-submit /usr/local/bin/.
 ADD jutge-exec/jutge-start /usr/local/bin/.
 ADD jutge-exec/jutge-sanitize /usr/local/bin/.
 ADD jutge-exec/jutge-somhi /usr/local/bin/.
+ADD jutge-exec/jutge-kill-nobody.c /usr/bin/jutge-kill-nobody.c
+RUN apt install gcc -y 
+RUN gcc -o /usr/bin/jutge-kill-nobody /usr/bin/jutge-kill-nobody.c
+RUN rm /usr/bin/jutge-kill-nobody.c
+RUN chmod 700 /usr/bin/jutge-kill-nobody
 RUN chmod u=rx,g=rx,o=rx /usr/local/bin/jutge-submit
 RUN chmod u=rx,g=rx,o=rx /usr/local/bin/jutge-start
 RUN chmod u=rx,g=rx,o=rx /usr/local/bin/jutge-sanitize
