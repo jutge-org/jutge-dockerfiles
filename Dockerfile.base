@@ -37,7 +37,7 @@ RUN apt-get --yes --no-install-recommends install python3 python3-pip python3-ve
 RUN apt-get --yes --no-install-recommends install python3-yaml python3-chardet
 RUN pip3 install --break-system-packages yogi
 
-# Install jutge-vinga from another container (which we just use to depend on it here)
+# Install jutge-vinga from the binary of a repository
 ADD https://github.com/jutge-org/jutge-vinga-bin/raw/refs/heads/main/jutge-vinga-linux /usr/local/bin/jutge-vinga
 RUN chmod u=rsx,g=rsx,o=rsx /usr/local/bin/jutge-vinga
 RUN echo "worker ALL=(ALL) NOPASSWD: /usr/local/bin/jutge-somhi" | \
