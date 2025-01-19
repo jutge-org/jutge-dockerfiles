@@ -33,7 +33,7 @@ RUN adduser --disabled-password --gecos '' work-cleaner --uid 1015
 # Install Python3
 RUN apt-get --yes --no-install-recommends install python3 python3-pip python3-venv 
 
-# NOTE(pauek): Needed by the jutge driver!
+# Needed by the jutge driver!
 RUN apt-get --yes --no-install-recommends install python3-yaml python3-chardet
 RUN pip3 install --break-system-packages yogi
 
@@ -43,7 +43,7 @@ RUN chmod u=rsx,g=rsx,o=rsx /usr/local/bin/jutge-vinga
 RUN echo "worker ALL=(ALL) NOPASSWD: /usr/local/bin/jutge-somhi" | \
     (sudo su -c 'EDITOR="tee -a" visudo -f /etc/sudoers.d/worker')
 
-# Install jutge-run-inside
+# Install jutge-exec scripts
 ADD jutge-exec/jutge-submit /usr/local/bin/.
 ADD jutge-exec/jutge-start /usr/local/bin/.
 ADD jutge-exec/jutge-sanitize /usr/local/bin/.
