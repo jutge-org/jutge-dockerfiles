@@ -94,8 +94,8 @@ RUN apt-get --yes --no-install-recommends install \
 ##########################################
 
 USER root
-ADD https://exaloop.io/install.sh /root/install.sh
-RUN bash /root/install.sh || true
+ADD https://exaloop.io/install.sh /root/install-codon.sh
+RUN bash /root/install-codon.sh || true
 RUN mv /root/.codon /opt/codon && \
     ln -s /opt/codon/bin/codon /usr/local/bin/codon
 
@@ -105,14 +105,12 @@ RUN mv /root/.codon /opt/codon && \
 ##########################################
 
 USER root
-RUN pip3 install --break-system-packages sootty
-
-USER worker
 WORKDIR /opt
-RUN wget -qO- https://github.com/YosysHQ/oss-cad-suite-build/releases/download/2024-10-17/oss-cad-suite-linux-x64-20241017.tgz | tar xvz
-
-RUN echo "export PATH=\$PATH:/opt/oss-cad-suite/bin" >> /home/worker/.profile
-RUN echo "export PATH=\$PATH:/opt/oss-cad-suite/bin" >> /home/worker/.bashrc
+RUN pip3 install --break-system-packages sootty
+ADD https://github.com/YosysHQ/oss-cad-suite-build/releases/download/2024-10-17/oss-cad-suite-linux-x64-20241017.tgz /opt/oss-cad-suite.tgz
+RUN tar xvzf oss-cad-suite.tgz
+RUN rm oss-cad-suite.tgz
+ENV PATH="$PATH:/opt/oss-cad-suite/bin"
 
 
 ##########################################
@@ -146,14 +144,9 @@ RUN ln -s /opt/julia-1.11.1/bin/julia /usr/bin/julia
 ##########################################
 
 USER root
-RUN curl -fsSL https://bun.sh/install | sudo bash 
-RUN mv /root/.bun /opt/bun
-ENV PATH="$PATH:/root/.bun/bin"
-RUN echo "export PATH=\$PATH:/opt/bun/bin" >> /home/worker/.bashrc
-RUN echo "export PATH=\$PATH:/opt/bun/bin" >> /home/worker/.profile 
-
-
-# TODO: scripts are not available
+ADD https://bun.sh/install /root/install-bun.sh
+RUN bash /root/install-bun.sh
+RUN mv /root/.bun/bin/bun /usr/local/bin/bun
 
 
 ##########################################
@@ -188,7 +181,7 @@ RUN rm /clojure/src -rf
 ##########################################
 
 USER root
-RUN pip3 install --break-system-packages whitespace
+# RUN pip3 install --break-system-packages whitespace
 
 
 ##########################################
@@ -208,9 +201,8 @@ USER root
 RUN curl -LO https://ziglang.org/download/0.14.0/zig-linux-x86_64-0.14.0.tar.xz 
 RUN tar -xf zig-linux-x86_64-0.14.0.tar.xz
 RUN mv zig-linux-x86_64-0.14.0 /opt/zig 
-RUN echo "export PATH=\$PATH:/opt/zig" >> /home/worker/.bashrc
-RUN echo "export PATH=\$PATH:/opt/zig" >> /home/worker/.profile 
 RUN rm zig-linux-x86_64-0.14.0.tar.xz
+ENV PATH="$PATH:/opt/zig"
 
 
 ##########################################
@@ -224,35 +216,35 @@ RUN mkdir /opt/pylibs && \
     echo install $pylib; \
     python3 -m venv $pylib; \
     source $pylib/bin/activate; \
-    pip install $pylib --break-system-packages; \
+    pip install $pylib ; \
     pip show $pylib > $pylib/show.txt; \
     deactivate; \
     chmod 700 $pylib; \
     done
 
-USER root
+#USER root
 # If the following fails, perhaps python has updated, and the Dockerfile instructions must be updated to follow that.
 # Essentially, this line is a canary.
-RUN ls -lh /usr/local/lib/python3.11/ 
-RUN true && for pylib in numpy scipy simpy networkx optilog pandas matplotlib more-itertools biopython beautifulsoup4; do \
-    ln -s /opt/pylibs/$pylib/lib/python3.11/site-packages/pip /usr/local/lib/python3.11/dist-packages/$pylib; \
-    done
+#RUN ls -lh /usr/local/lib/python3.11/ 
+#RUN true && for pylib in numpy scipy simpy networkx optilog pandas matplotlib more-itertools biopython beautifulsoup4; do \
+#    ln -s /opt/pylibs/$pylib/lib/python3.11/site-packages/pip /usr/local/lib/python3.11/dist-packages/$pylib; \
+#    done
 
 
 ##########################################
 # Jutge tools
 ##########################################
 
-USER root
-RUN bun install @jutge.org/cli @jutge.org/toolkit
+USER worker
+RUN bun install --global @jutge.org/cli @jutge.org/toolkit
+ENV PATH="$PATH:/home/worker/.bun/bin"
 
 
 ##########################################
 # Jutge test compilers script
 ##########################################
 
-ADD jutge-test-compilers.sh /usr/local/bin/.
-RUN chmod u=rx,g=rx,o=rx /usr/local/bin/jutge-test-compilers.sh
+COPY --chmod=755 jutge-test-compilers.sh /usr/local/bin/jutge-test-compilers.sh
 
 
 ##########################################
@@ -263,6 +255,7 @@ RUN chmod u=rx,g=rx,o=rx /usr/local/bin/jutge-test-compilers.sh
 USER root
 RUN apt-get --yes clean
 RUN pip3 cache purge
+RUN rm -rf /home/worker/.bun/install/cache
 
 # Set user
 USER worker
