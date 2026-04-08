@@ -344,12 +344,57 @@ EOF
     assert_hello_stdout hello.zig.out $?
 }
 
+function test_Node() {
+    echo "Testing Node (JavaScript)..."
+    cat > hello.node.js <<'EOF'
+console.log("Hello, World!")
+EOF
+    node hello.node.js > hello.node.out 2> hello.node.err
+    assert_hello_stdout hello.node.out $?
+}
+
+function test_Chicken() {
+    echo "Testing Chicken (Scheme)..."
+    cat > hello.chicken.scm <<'EOF'
+(display "Hello, World!\n")
+EOF
+    csc -o hello.chicken.exe hello.chicken.scm
+    ./hello.chicken.exe > hello.chicken.out 2> hello.chicken.err
+    assert_hello_stdout hello.chicken.out $?
+}
+
+function test_F2C() {
+    echo "Testing F2C (Fortran 77 → C)..."
+    cat > hello_f2c.f <<'EOF'
+      program hello
+      character*13 msg
+      msg = 'Hello, World!'
+      write(6,'(A)') msg
+      end
+EOF
+    f2c hello_f2c.f
+    gcc -o hello_f2c.exe hello_f2c.c -lf2c -lm
+    ./hello_f2c.exe > hello_f2c.out 2> hello_f2c.err
+    assert_hello_stdout hello_f2c.out $?
+}
+
+
+function test_Beef() {
+    echo "Testing Beef..."
+    cat > hello.bf <<'EOF'
+++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++++++++++++++.------------.<<+++++++++++++++.>.+++.------.--------.>+.>.
+EOF
+    beef hello.bf > hello.bf.out 2> hello.bf.err
+    assert_hello_stdout hello.bf.out $?
+}
+
 
 test_GCC
 test_GXX
 test_Python
 test_Java
 test_Bun
+test_Node
 test_PHP
 test_Julia
 test_Haskell
@@ -362,10 +407,12 @@ test_Erlang
 test_Clang
 test_ClangXX
 test_CLISP
+test_Chicken
 test_Codon
 test_FBC
 test_GDC
 test_GFortran
+test_F2C
 test_GNAT
 test_GObjC
 test_Nim
@@ -373,3 +420,4 @@ test_Perl
 test_R
 test_Ruby
 test_Zig
+test_Beef
