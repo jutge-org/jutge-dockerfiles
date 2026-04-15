@@ -70,13 +70,11 @@ RUN apt-get install --yes --no-install-recommends \
     php-cli \
     rustc \
     lua5.3 \
-    gccgo golang \
+    golang \
     r-base r-base-core r-base-dev r-cran-vgam r-recommended \
     nodejs \
     ruby \
-    beef \
-    basic256 bwbasic \
-    chicken-bin libchicken-dev guile-2.2 stalin \
+    chicken-bin libchicken-dev stalin \
     clisp \
     erlang \
     f2c gfortran  \
@@ -124,17 +122,6 @@ RUN rm -rf /opt/FreeBASIC-1.10.1-linux-x86_64
 
 
 ##########################################
-# Julia
-##########################################
-
-USER root
-WORKDIR /opt
-RUN curl -L https://julialang-s3.julialang.org/bin/linux/x64/1.11/julia-1.11.1-linux-x86_64.tar.gz | tar xz
-RUN mv julia-1.11.1 julia
-ENV PATH="$PATH:/opt/julia/bin"
-
-
-##########################################
 # Bun
 ##########################################
 
@@ -164,23 +151,6 @@ RUN mv /root/.m2/repository/ /clojure/.m2
 RUN chmod -R o+r /clojure/
 RUN rm /clojure/deps.edn
 RUN rm /clojure/src -rf
-
-
-##########################################
-# Whitespace
-##########################################
-
-USER root
-RUN pip3 install --break-system-packages whitespace
-
-
-##########################################
-# Crystal
-##########################################
-
-# TODO: Fix it, it does not work (Depends: crystal1.19 but it is not installable)
-USER root
-# RUN curl -fsSL https://crystal-lang.org/install.sh | sudo bash
 
 
 ##########################################
