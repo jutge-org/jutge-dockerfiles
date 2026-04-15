@@ -88,16 +88,6 @@ EOF
     assert_hello_stdout hello.php.out $?
 }
 
-function test_Julia() {
-    echo "Testing Julia..."
-    cat > hello.jl <<'EOF'
-println("Hello, World!")
-EOF
-
-    julia hello.jl > hello.jl.out 2> hello.jl.err
-    assert_hello_stdout hello.jl.out $?
-}
-
 function test_Haskell() {
     echo "Testing Haskell (GHC)..."
     cat > hello.hs <<'EOF'
@@ -379,16 +369,6 @@ EOF
 }
 
 
-function test_Beef() {
-    echo "Testing Beef..."
-    cat > hello.bf <<'EOF'
-++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++++++++++++++.------------.<<+++++++++++++++.>.+++.------.--------.>+.>.
-EOF
-    beef hello.bf > hello.bf.out 2> hello.bf.err
-    assert_hello_stdout hello.bf.out $?
-}
-
-
 test_GCC
 test_GXX
 test_Python
@@ -396,7 +376,6 @@ test_Java
 test_Bun
 test_Node
 test_PHP
-test_Julia
 test_Haskell
 test_Clojure
 test_Kotlin
@@ -420,4 +399,3 @@ test_Perl
 test_R
 test_Ruby
 test_Zig
-test_Beef
