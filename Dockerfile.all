@@ -12,8 +12,8 @@ RUN apt-get --yes update && apt-get --yes upgrade
 
 # Install basic packages
 RUN apt-get install --yes --no-install-recommends \
-    tzdata ack moreutils less tree adduser curl wget joe nano sudo unzip jq zlib1g-dev gnupg \
-    build-essential python3 python3-pip python3-venv python3-yaml python3-chardet
+    file tzdata ack moreutils less tree adduser curl wget joe nano sudo unzip jq zlib1g-dev gnupg \
+    build-essential python3 python3-pip python3-venv python3-yaml python3-chardet 
 
 # Set local timezone
 RUN ln -fs /usr/share/zoneinfo/Europe/Madrid /etc/localtime && \
