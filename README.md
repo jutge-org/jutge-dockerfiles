@@ -33,7 +33,7 @@ The diagram is this:
 ```
                          ┌─────────────────┐
 task.tar           │     │                 │
- ├─ driver.tgz     ├───►│   Jutge Image   ├───► correction.tgz
+ ├─ driver.tgz      ├───►│   Jutge Image   ├───► correction.tgz
  ├─ problem.tgz    │     │                 │
  └─ submission.tgz │     └─────────────────┘
 ```
