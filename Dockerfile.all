@@ -1,0 +1,220 @@
+FROM debian:12.13-slim AS base
+WORKDIR /root
+ENV DEBIAN_FRONTEND=noninteractive
+
+
+##########################################
+# Basic system
+##########################################
+
+# Update and upgrade packages
+RUN apt-get --yes update && apt-get --yes upgrade
+
+# Install basic packages
+RUN apt-get install --yes --no-install-recommends \
+    file tzdata ack moreutils less tree adduser curl wget joe nano sudo unzip jq zlib1g-dev gnupg \
+    build-essential python3 python3-pip python3-venv python3-yaml python3-chardet 
+
+# Set local timezone
+RUN ln -fs /usr/share/zoneinfo/Europe/Madrid /etc/localtime && \
+    dpkg-reconfigure --frontend noninteractive tzdata
+
+# Create user 'worker' (will take UID:GID 1000:1000)
+RUN adduser --disabled-password worker
+ADD inputrc /home/worker/.inputrc
+RUN chown -R worker:worker /home/worker
+RUN chown worker:worker /opt
+
+# Create 9 additional users (will take UID:GID 1001:1001 to 1009:1009)
+RUN for i in $(seq 1 9); do \
+    adduser --disabled-password --gecos '' worker$i; \
+    done
+
+# Create process killer after compilation with hardcoded uid 1015
+RUN adduser --disabled-password --gecos '' work-cleaner --uid 1015    
+
+# Python3 packages for Jutge.org
+RUN pip3 install --break-system-packages turtle-pil easyinput yogi pytokr mypy pycodestyle
+
+# Install jutge-vinga from the binary of a repository
+ADD https://github.com/jutge-org/jutge-vinga-bin/raw/refs/heads/main/jutge-vinga-linux /usr/local/bin/jutge-vinga
+RUN chmod u=rsx,g=rsx,o=rsx /usr/local/bin/jutge-vinga
+RUN echo "worker ALL=(ALL) NOPASSWD: /usr/local/bin/jutge-somhi" | \
+    (sudo su -c 'EDITOR="tee -a" visudo -f /etc/sudoers.d/worker')
+
+# Install jutge-exec scripts
+ADD jutge-exec/jutge-submit /usr/local/bin/.
+ADD jutge-exec/jutge-start /usr/local/bin/.
+ADD jutge-exec/jutge-sanitize /usr/local/bin/.
+ADD jutge-exec/jutge-somhi /usr/local/bin/.
+ADD jutge-exec/jutge-kill-nobody.c /usr/bin/jutge-kill-nobody.c
+RUN gcc -o /usr/bin/jutge-kill-nobody /usr/bin/jutge-kill-nobody.c
+RUN rm /usr/bin/jutge-kill-nobody.c
+RUN chmod 700 /usr/bin/jutge-kill-nobody
+RUN chmod u=rx,g=rx,o=rx /usr/local/bin/jutge-submit
+RUN chmod u=rx,g=rx,o=rx /usr/local/bin/jutge-start
+RUN chmod u=rx,g=rx,o=rx /usr/local/bin/jutge-sanitize
+RUN chmod u=rx,g=rx,o=rx /usr/local/bin/jutge-somhi
+
+
+##########################################
+# Install packages
+##########################################
+
+USER root
+RUN apt-get install --yes --no-install-recommends \
+    build-essential gcc g++ clang \
+    openjdk-17-jdk-headless \
+    ghc \
+    kotlin \
+    php-cli \
+    rustc \
+    lua5.3 \
+    golang \
+    r-base r-base-core r-base-dev r-cran-vgam r-recommended \
+    nodejs \
+    ruby \
+    chicken-bin libchicken-dev stalin \
+    clisp \
+    erlang \
+    f2c gfortran  \
+    fpc \
+    swi-prolog \
+    gdc \
+    gnat \
+    gobjc \
+    nim 
+
+
+##########################################
+# Codon
+##########################################
+
+USER root
+WORKDIR /root
+RUN curl -fsSL https://exaloop.io/install.sh | bash 
+RUN mv /root/.codon /opt/codon 
+ENV PATH="$PATH:/opt/codon/bin"
+
+
+##########################################
+# Circuits
+##########################################
+
+USER root
+WORKDIR /opt
+RUN curl -L https://github.com/YosysHQ/oss-cad-suite-build/releases/download/2024-10-17/oss-cad-suite-linux-x64-20241017.tgz | tar xz
+ENV PATH="$PATH:/opt/oss-cad-suite/bin"
+RUN pip3 install --break-system-packages sootty
+
+
+##########################################
+# FreeBasic
+##########################################
+
+USER root
+WORKDIR /opt
+RUN apt-get --yes install libncurses5-dev libncursesw5-dev libncurses5
+RUN curl -L https://sourceforge.net/projects/fbc/files/FreeBASIC-1.10.1/Binaries-Linux/FreeBASIC-1.10.1-linux-x86_64.tar.gz/download  | tar xz
+WORKDIR /opt/FreeBASIC-1.10.1-linux-x86_64
+RUN ./install.sh -i
+RUN rm -rf /opt/FreeBASIC-1.10.1-linux-x86_64 
+
+
+##########################################
+# Bun
+##########################################
+
+USER root
+WORKDIR /root
+RUN curl -L https://bun.sh/install | bash
+RUN mv /root/.bun/bin/bun /usr/local/bin/bun
+
+
+##########################################
+# Clojure
+##########################################
+
+# Required for clj to work
+USER root
+RUN apt-get --yes --no-install-recommends install rlwrap
+RUN curl -L https://github.com/clojure/brew-install/releases/latest/download/linux-install.sh | bash
+
+# Make sure clojure downloads the libraries it needs
+RUN mkdir /clojure
+WORKDIR /clojure
+RUN echo '{:paths ["src"]}' > deps.edn
+RUN mkdir src
+RUN echo '(ns core)\n\n(println "Hello, World")' > src/core.clj
+RUN clj -M 
+RUN mv /root/.m2/repository/ /clojure/.m2
+RUN chmod -R o+r /clojure/
+RUN rm /clojure/deps.edn
+RUN rm /clojure/src -rf
+
+
+##########################################
+# Zig
+##########################################
+
+USER root
+WORKDIR /opt
+RUN curl -L https://ziglang.org/download/0.14.0/zig-linux-x86_64-0.14.0.tar.xz | tar x -J
+RUN mv zig-linux-x86_64-0.14.0 zig 
+ENV PATH="$PATH:/opt/zig"
+
+
+##########################################
+# Python libraries
+##########################################
+
+USER worker
+RUN mkdir /opt/pylibs 
+COPY --chmod=755 pylib.sh /opt/pylibs/pylib.sh
+WORKDIR /opt/pylibs
+RUN ./pylib.sh numpy
+RUN ./pylib.sh scipy
+RUN ./pylib.sh simpy
+RUN ./pylib.sh networkx
+# RUN ./pylib.sh optilog
+RUN ./pylib.sh pandas
+RUN ./pylib.sh matplotlib
+RUN ./pylib.sh more-itertools
+RUN ./pylib.sh biopython
+RUN ./pylib.sh beautifulsoup4
+RUN rm /opt/pylibs/pylib.sh
+RUN chmod 700 /opt/pylibs/*
+
+
+##########################################
+# Jutge tools
+##########################################
+
+USER worker
+RUN bun install --global @jutge.org/cli @jutge.org/toolkit
+ENV PATH="$PATH:/home/worker/.bun/bin"
+
+
+##########################################
+# Jutge test compilers script
+##########################################
+
+COPY --chmod=755 jutge-test-compilers.sh /usr/local/bin/jutge-test-compilers.sh
+
+
+##########################################
+# End
+##########################################
+
+# Clean up
+USER root
+RUN apt-get --yes clean
+RUN pip3 cache purge
+RUN rm -rf /home/worker/.bun/install/cache
+
+# Set user
+USER worker
+WORKDIR /home/worker
+ENV USER=worker
+ENV LANG=C.UTF-8
+
