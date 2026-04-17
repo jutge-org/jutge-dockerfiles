@@ -25,7 +25,7 @@ ADD inputrc /home/worker/.inputrc
 RUN chown -R worker:worker /home/worker
 RUN chown worker:worker /opt
 
-# Create 9 additional users
+# Create 9 additional users (will take UID:GID 1001:1001 to 1009:1009)
 RUN for i in $(seq 1 9); do \
     adduser --disabled-password --gecos '' worker$i; \
     done
