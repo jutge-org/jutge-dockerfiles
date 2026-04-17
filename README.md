@@ -6,34 +6,18 @@ These images are generated, tested locally, and eventually uploaded to Docker Hu
 
 # Image types
 
-Currently, the following images exist:
-
-- `base` - The base image. Contains the programs used in the correction process as well as Python. The other images extend from `base`.
-- `cpp` - Contains C and C++ compilers.
-- `python` - Contains common Python Libs and Codon.
-- `java` - Contains JVM based languages.
-- `haskell` - Contains Haskell.
-- `extra` - Contains other less used but popular languages.
-- `esoteric` - Contains rare languages.
-- `tools` - Contains utilities used by the Jutge.org service ocasionally, such as `LaTeX`.
-- `circuits` - Contains the required programs in order to grade Verilog problems.
+In the past, we used to have many different images, each one for a different types of languages. Currenlty, we have a single image, `jutge-all`, which contains all the languages and tools we support.
 
 ## Building
 
 Use `make` to build all images or `make <type>` to build only one of them. The `Dockerfile.<type>` files suggest the types available.
 
-For example, to only build the java image:
-
-```sh
-make Dockerfile.java
-```
-
 ## Pulling from Docker Hub
 
-For example, for the python image:
+For example, pull the `jutge-all` image with the following command:
 
 ```sh
-docker pull jutgeorg/python
+docker pull jutgeorg/jutge-all
 ```
 
 # Image interface
@@ -45,12 +29,13 @@ The program running in the container will receive, at its standard input (`stdin
 The evaluator program running inside the container will then process the `submission.tgz` (using both the `driver.tgz` and the `problem.tgz`) and produce a `correction.tgz` file at the standard output (`stdout`). All of this happens in a folder which is inside the container and which is discarded once the docker container finishes execution. The run log is written to `stderr`.
 
 The diagram is this:
+
 ```
-                         ┌─────────────────┐                   
-task.tar           │     │                 │                   
+                         ┌─────────────────┐
+task.tar           │     │                 │
  ├─ driver.tgz     ├───►│   Jutge Image   ├───► correction.tgz
- ├─ problem.tgz    │     │                 │            
- └─ submission.tgz │     └─────────────────┘                   
+ ├─ problem.tgz    │     │                 │
+ └─ submission.tgz │     └─────────────────┘
 ```
 
 # Installation
@@ -70,19 +55,15 @@ git submodule init
 git submodule update
 ```
 
-Then, just invoke `make` with the images you want (or no params for all of them)
+Then, just invoke `make`.
 
 ```sh
 make
-make cpp
-make python
-make java
-make haskell
-make esoteric
-make tools
-make extra
-make circuits
 ```
+
+## License
+
+Apache License 2.0
 
 ## Credits
 
@@ -90,6 +71,4 @@ make circuits
 - [Jordi Reig](https://github.com/jordireig)
 - [Pau Fernández](https://github.com/pauek)
 
-## License
-
-Apache License 2.0
+By Universitat Politècnica de Catalunya - BarcelonaTech (UPC), 2026.
