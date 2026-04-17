@@ -70,5 +70,6 @@ Apache License 2.0
 - [Jordi Petit](https://github.com/jordi-petit)
 - [Jordi Reig](https://github.com/jordireig)
 - [Pau Fernández](https://github.com/pauek)
+- [Witixin](https://github.com/Witixin1512)
 
 By Universitat Politècnica de Catalunya - BarcelonaTech (UPC), 2026.
